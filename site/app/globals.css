@@ -1,0 +1,591 @@
+/* ============================================================================
+   HoodCraft — design system
+
+   Everything here descends from two sources: the palette sampled straight out
+   of the mod's own 16x16 textures, and the way Minecraft shades a block —
+   lit top and left faces, dark bottom and right. That bevel is the single
+   primitive the whole site is built from.
+
+   House rules, kept without exception:
+     - no border-radius, anywhere
+     - no blurred shadows; every shadow is a hard offset
+     - no gradients as decoration (one is used, as sky, in the hero scrim)
+     - transitions run in steps(), never eased — motion is quantised too
+   ========================================================================= */
+
+:root {
+  /* Greens, straight from robin_bird.png */
+  --green-lit:  #30E028;
+  --green:      #00C805;
+  --green-mid:  #00A804;
+  --green-dark: #007A03;
+
+  /* Darks, from the Robin's eye band and beak */
+  --ink-900: #0E1219;
+  --ink-800: #171B24;
+  --ink-700: #1F262E;
+  --ink-600: #232D38;
+  --ink-500: #293B42;
+  --ink-400: #3A4A56;
+
+  /* Bone, from the Robin's face stripe */
+  --bone-100: #E8F0E5;
+  --bone-200: #D6E4D2;
+  --bone-300: #BAD2B4;
+  --bone-400: #9EC494;
+
+  /* Gold, from hood_brush.png */
+  --gold-lit:  #FAD64A;
+  --gold:      #E9B115;
+  --gold-dark: #846426;
+
+  --bevel: 4px;
+  --unit: 8px;
+
+  --font-display: var(--font-silkscreen), ui-monospace, monospace;
+  --font-body: var(--font-plex-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  border-radius: 0 !important; /* load-bearing: one rounded corner breaks the illusion */
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--ink-900);
+  color: var(--bone-200);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* The block grid the whole page sits on. Barely visible; you feel it more than see it. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(210, 230, 210, 0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(210, 230, 210, 0.028) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+main, header, footer { position: relative; z-index: 1; }
+
+/* ------------------------------------------------------------------ type */
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  color: var(--bone-100);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+h2 {
+  font-size: clamp(20px, 3.2vw, 32px);
+  /* A one-step extrusion. The banner does this in 3D; here it is a single hard offset. */
+  text-shadow: 3px 3px 0 var(--ink-900);
+  /* Headings sit directly on grids of blocks in most sections, so the gap has
+     to live here rather than on an intro paragraph that may not exist. */
+  margin-bottom: 28px;
+}
+
+h3 { font-size: 16px; letter-spacing: 0.02em; }
+
+/* h2's gap is for section headings; a heading inside a card sets its own. */
+.panel h2, .rule h2 { margin-bottom: 16px; }
+
+p { margin: 0 0 1rem; max-width: 68ch; }
+p:last-child { margin-bottom: 0; }
+
+a { color: var(--green-lit); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a:hover { color: var(--bone-100); }
+
+.mono { font-family: var(--font-mono); font-size: 0.875em; }
+.muted { color: var(--bone-400); }
+.small { font-size: 13px; line-height: 1.55; }
+
+/* Section eyebrow: a small pixel label above each heading. */
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  background: var(--ink-600);
+}
+
+/* ---------------------------------------------------------------- layout */
+
+.wrap { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
+
+/*
+   The header is sticky and 64px tall, so an anchor jump would otherwise park
+   the section heading underneath it. Without this, clicking "Vote" clips the
+   top of the ballot.
+*/
+section[id] { scroll-margin-top: 84px; }
+
+.section { padding: clamp(56px, 9vw, 112px) 0; }
+.section + .section { border-top: 2px solid var(--ink-700); }
+
+/* The ballot sits directly under the hero, so it does not need the full gap. */
+.section--tight { padding-top: clamp(28px, 4vw, 48px); }
+.section--tight h2 { margin-bottom: 24px; }
+
+/* ----------------------------------------------------------- the bevel */
+
+/*
+   The one primitive. --face is the flat colour; the top and left edges take
+   the lit tone, the bottom and right the shadow tone. Exactly how a Minecraft
+   block is shaded, and why these surfaces read as solid rather than as cards.
+*/
+.block {
+  background: var(--face, var(--ink-800));
+  box-shadow:
+    inset 0 var(--bevel) 0 0 var(--face-lit, var(--ink-600)),
+    inset var(--bevel) 0 0 0 var(--face-lit, var(--ink-600)),
+    inset 0 calc(var(--bevel) * -1) 0 0 var(--face-dark, var(--ink-900)),
+    inset calc(var(--bevel) * -1) 0 0 0 var(--face-dark, var(--ink-900));
+}
+
+.panel {
+  --face: var(--ink-800);
+  --face-lit: var(--ink-600);
+  --face-dark: var(--ink-900);
+  background: var(--face);
+  box-shadow:
+    inset 0 var(--bevel) 0 0 var(--face-lit),
+    inset var(--bevel) 0 0 0 var(--face-lit),
+    inset 0 calc(var(--bevel) * -1) 0 0 var(--face-dark),
+    inset calc(var(--bevel) * -1) 0 0 0 var(--face-dark),
+    6px 6px 0 rgba(0, 0, 0, 0.45);
+  padding: 24px;
+}
+
+/* --------------------------------------------------------------- buttons */
+
+.btn {
+  --face: var(--green);
+  --face-lit: var(--green-lit);
+  --face-dark: var(--green-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 0;
+  padding: 15px 24px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink-900);
+  background: var(--face);
+  cursor: pointer;
+  box-shadow:
+    inset 0 var(--bevel) 0 0 var(--face-lit),
+    inset var(--bevel) 0 0 0 var(--face-lit),
+    inset 0 calc(var(--bevel) * -1) 0 0 var(--face-dark),
+    inset calc(var(--bevel) * -1) 0 0 0 var(--face-dark),
+    0 6px 0 rgba(0, 0, 0, 0.55);
+  transition: transform 80ms steps(2), box-shadow 80ms steps(2);
+}
+
+.btn:hover { --face: var(--green-lit); --face-lit: #5BF055; }
+
+/* Presses in, the way a Minecraft button does. */
+.btn:active {
+  transform: translateY(4px);
+  box-shadow:
+    inset 0 var(--bevel) 0 0 var(--face-lit),
+    inset var(--bevel) 0 0 0 var(--face-lit),
+    inset 0 calc(var(--bevel) * -1) 0 0 var(--face-dark),
+    inset calc(var(--bevel) * -1) 0 0 0 var(--face-dark),
+    0 2px 0 rgba(0, 0, 0, 0.55);
+}
+
+.btn--ghost {
+  --face: var(--ink-700);
+  --face-lit: var(--ink-500);
+  --face-dark: var(--ink-900);
+  color: var(--bone-200);
+}
+.btn--ghost:hover { --face: var(--ink-600); --face-lit: var(--ink-400); }
+
+.btn--gold {
+  --face: var(--gold);
+  --face-lit: var(--gold-lit);
+  --face-dark: var(--gold-dark);
+  color: var(--ink-900);
+}
+.btn--gold:hover { --face: var(--gold-lit); --face-lit: #FFE894; }
+
+.btn[disabled],
+.btn[aria-disabled="true"] {
+  --face: var(--ink-700);
+  --face-lit: var(--ink-600);
+  --face-dark: var(--ink-900);
+  color: var(--ink-400);
+  cursor: not-allowed;
+  box-shadow:
+    inset 0 var(--bevel) 0 0 var(--face-lit),
+    inset var(--bevel) 0 0 0 var(--face-lit),
+    inset 0 calc(var(--bevel) * -1) 0 0 var(--face-dark),
+    inset calc(var(--bevel) * -1) 0 0 0 var(--face-dark);
+  transform: none;
+}
+
+.btn--sm { padding: 10px 14px; font-size: 11px; }
+
+/* Hard, on-brand focus ring — visible against every surface on the page. */
+:focus-visible {
+  outline: 3px solid var(--gold-lit);
+  outline-offset: 3px;
+}
+
+/* ----------------------------------------------------------------- chips */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--ink-800);
+  box-shadow: inset 0 2px 0 0 var(--ink-600), inset 0 -2px 0 0 var(--ink-900);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--bone-300);
+  white-space: nowrap;
+}
+.chip strong { color: var(--bone-100); font-weight: 600; }
+
+.chip--live { color: var(--green-lit); }
+.chip--live::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: var(--green-lit);
+  box-shadow: 0 0 0 2px rgba(48, 224, 40, 0.25);
+}
+
+/* --------------------------------------------------------------- sprites */
+
+/* The mod's real 16x16 item textures, scaled with nearest-neighbour so they
+   stay pixels instead of turning to soup. */
+.sprite {
+  image-rendering: pixelated;
+  display: block;
+}
+
+/* ------------------------------------------------------------ tally bars */
+
+/*
+   Vote share as a row of discrete blocks rather than a smooth bar. Reads as
+   an inventory row, and discrete units are genuinely easier to compare at a
+   glance than a continuous fill.
+*/
+.tally {
+  display: grid;
+  grid-template-columns: repeat(var(--cells, 24), 1fr);
+  gap: 3px;
+  height: 26px;
+}
+
+.tally__cell {
+  background: var(--ink-700);
+  box-shadow: inset 0 2px 0 0 var(--ink-600), inset 0 -2px 0 0 var(--ink-900);
+}
+
+.tally__cell--on {
+  background: var(--cell, var(--green));
+  box-shadow:
+    inset 0 2px 0 0 var(--cell-lit, var(--green-lit)),
+    inset 0 -2px 0 0 var(--cell-dark, var(--green-dark));
+}
+
+/* ------------------------------------------------------------- utilities */
+
+.row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.between { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.grid { display: grid; gap: 20px; }
+
+@media (max-width: 720px) {
+  .wrap { width: calc(100% - 32px); }
+  .hide-sm { display: none !important; }
+  .panel { padding: 18px; }
+
+  /*
+     The banner is 3:1 and the wordmark fills most of its width, so a fixed
+     height plus object-fit:cover slices the letters off at both ends on a
+     phone. Matching the container to the image's own ratio crops nothing.
+  */
+  .hero__banner { height: auto; aspect-ratio: 2448 / 816; }
+  .hero__bannerimg { object-position: center; }
+}
+
+/* Someone who has asked for less motion gets none of the stepped animation. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* ============================================================================
+   Components. Every surface below is the .block bevel with a different face
+   colour; nothing here introduces a new visual idea, only new arrangements.
+   ========================================================================= */
+
+/* ---------------------------------------------------------------- header */
+
+.siteheader {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--ink-800);
+  border-bottom: 2px solid var(--ink-600);
+  padding: 12px 0;
+}
+
+.siteheader__mark {
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  color: var(--bone-100);
+  text-decoration: none;
+}
+
+.siteheader__nav { display: flex; gap: 24px; }
+.siteheader__nav a {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone-400);
+  text-decoration: none;
+}
+.siteheader__nav a:hover { color: var(--green-lit); }
+
+/* ------------------------------------------------------------------ hero */
+
+.hero { position: relative; }
+
+.hero__banner {
+  position: relative;
+  height: clamp(200px, 32vw, 400px);
+  overflow: hidden;
+}
+
+.hero__bannerimg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 46%;
+  display: block;
+}
+
+/* The one gradient on the site, and it is doing a real job: dropping the
+   photographic banner into the flat page ground without a visible seam. */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(14, 18, 25, 0) 38%,
+    rgba(14, 18, 25, 0.72) 76%,
+    var(--ink-900) 100%
+  );
+}
+
+.hero__body { padding: 8px 0 36px; }
+.hero__title { font-size: clamp(30px, 6.4vw, 60px); text-shadow: 4px 4px 0 var(--ink-900); }
+.hero__lede { font-size: clamp(15px, 1.5vw, 18px); color: var(--bone-300); margin-top: 22px; max-width: 62ch; }
+.hero__facts { margin-top: 30px; }
+
+/* ---------------------------------------------------------------- layout */
+
+/* ----------------------------------------------------------------- chain */
+
+.chain {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+@media (max-width: 900px) { .chain { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .chain { grid-template-columns: 1fr; } }
+
+.chain__step { margin: 0; }
+.chain__tile {
+  --face: var(--ink-800);
+  --face-lit: var(--ink-600);
+  --face-dark: var(--ink-900);
+  position: relative;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.chain__photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/*
+   The item art fills the tile edge to edge, and an inset shadow paints under
+   its children - so the bevel is redrawn on top as an overlay. Without this
+   the frame simply vanishes behind the image.
+*/
+.chain__tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow:
+    inset 0 var(--bevel) 0 0 var(--face-lit),
+    inset var(--bevel) 0 0 0 var(--face-lit),
+    inset 0 calc(var(--bevel) * -1) 0 0 var(--face-dark),
+    inset calc(var(--bevel) * -1) 0 0 0 var(--face-dark);
+}
+.chain__index {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+.chain__step--locked .chain__index { color: var(--gold); }
+.chain__step p { margin: 10px 0 0; }
+
+/* ------------------------------------------------------------- incumbent */
+
+.incumbent {
+  display: grid;
+  grid-template-columns: 168px 1fr;
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.incumbent__art { aspect-ratio: 1; overflow: hidden; }
+.incumbent__photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media (max-width: 620px) { .incumbent { grid-template-columns: 1fr; } }
+
+/* Context, not a headline: the ballot is what the page is for. */
+.incumbent--slim { grid-template-columns: 96px 1fr; gap: 18px; padding: 16px; }
+@media (max-width: 620px) { .incumbent--slim { grid-template-columns: 72px 1fr; } }
+
+/* ---------------------------------------------------------------- ballot */
+
+.ballot { display: grid; gap: 20px; }
+.ballot__bar { --face: var(--ink-700); --face-lit: var(--ink-500); }
+.ballot__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(238px, 1fr));
+  gap: 20px;
+}
+
+.candidate { position: relative; padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+
+/* Square, because the egg renders are square - 16:10 would slice off top and bottom. */
+.candidate__art { position: relative; aspect-ratio: 1; display: grid; place-items: center; }
+.candidate__photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Same reason as the chain tiles: full-bleed art buries the panel's inset bevel,
+   so it is redrawn over the top. pointer-events:none keeps the Vote button live. */
+.candidate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow:
+    inset 0 var(--bevel) 0 0 var(--face-lit),
+    inset var(--bevel) 0 0 0 var(--face-lit),
+    inset 0 calc(var(--bevel) * -1) 0 0 var(--face-dark),
+    inset calc(var(--bevel) * -1) 0 0 0 var(--face-dark);
+}
+.candidate__art svg { display: block; width: min(128px, 46%); height: auto; }
+
+/*
+   Minecraft's missing-texture checker, recoloured per candidate. Saying "this
+   slot has no mascot yet" in the game's own visual language beats saying it in
+   a caption, and it stops an unfilled slot reading as a broken image.
+*/
+.candidate__art--sealed {
+  background-color: var(--seal-dark);
+  background-image:
+    linear-gradient(45deg, var(--seal-light) 25%, transparent 25%, transparent 75%, var(--seal-light) 75%),
+    linear-gradient(45deg, var(--seal-light) 25%, transparent 25%, transparent 75%, var(--seal-light) 75%);
+  background-size: 28px 28px;
+  background-position: 0 0, 14px 14px;
+}
+.candidate__body { padding: 18px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.candidate__body .btn { margin-top: auto; }
+.candidate__body p { margin: 0; }
+.candidate--chosen { outline: 4px solid var(--gold); outline-offset: -4px; }
+
+.candidate__crown {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-family: var(--font-display);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--gold);
+  color: var(--ink-900);
+  padding: 5px 8px;
+}
+
+/* --------------------------------------------------------------- notices */
+
+.notice {
+  margin: 0;
+  max-width: none;
+  padding: 14px 16px;
+  background: var(--ink-800);
+  box-shadow: inset 4px 0 0 0 var(--gold);
+  color: var(--bone-300);
+}
+.notice--bad { box-shadow: inset 4px 0 0 0 #E86A5A; }
+.notice strong { color: var(--bone-100); }
+
+/* ----------------------------------------------------------------- rules */
+
+.rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+@media (max-width: 900px) { .rules { grid-template-columns: 1fr; } }
+.rule__num { display: block; font-size: 12px; letter-spacing: 0.12em; color: var(--green); margin-bottom: 10px; }
+.rule h3 { margin-bottom: 12px; }
+.rule p { margin: 0; }
+
+/* ---------------------------------------------------------------- footer */
+
+.sitefooter {
+  border-top: 2px solid var(--ink-700);
+  background: var(--ink-800);
+  padding: 40px 0;
+}

@@ -14,7 +14,8 @@ runs/
 run-data/
 repo/
 
-# IDE
+# IDE / agent tooling
+.claude/
 .idea/
 *.iml
 *.ipr
@@ -45,3 +46,12 @@ textures/robin_bird_shiny.png
 # JVM crash dumps
 hs_err_pid*.log
 replay_pid*.log
+
+# Mascot voting site (site/)
+site/node_modules/
+site/.next/
+site/out/
+site/data/
+site/.env*.local
+site/next-env.d.ts
+site/tsconfig.tsbuildinfo
