@@ -61,9 +61,9 @@ Thirty percent of the loose cobbled deepslate on an ancient city's floors become
 so there is somewhere new for a brush to be used. Vanilla's suspicious sand still behaves exactly as
 it always did.
 
-Loot cannot be farmed. Suspicious sand or gravel that a player placed yields nothing, just as it
-yields nothing to a vanilla brush, and a block that has already been brushed keeps whatever it
-rolled — no re-rolling by switching brushes.
+Unlike a vanilla brush, the Hood Brush also works on suspicious blocks you placed yourself, which is
+handy for testing and no exploit — neither block can be obtained in survival at all. A block that has
+already been brushed keeps whatever it rolled, so results cannot be re-rolled.
 
 **Work in progress**
 
@@ -93,11 +93,16 @@ Upload from `docs/screenshots/`. All are 1600×900, comfortably over CurseForge'
 | --- | --- | --- |
 | `hero.png` | **Main image / thumbnail** | Robins perched on a log |
 | `portrait.png` | Gallery | The Robin, tamed with wheat seeds |
-| `brush.png` | Gallery | The Hood Brush over suspicious gravel |
+| `brush.png` | Gallery | The Hood Brush over suspicious sand and gravel |
 | `items.png` | Gallery | Black Feather, Hood Brush, Robin Egg |
 | `egg.png` | Gallery *(optional)* | Hatch stages on wool, slime and honey — WIP |
 
-The mod logo for the project avatar is `src/main/resources/hoodcraft.png` (128×128).
+For the project avatar use `docs/branding/robin-avatar.jpg` (1408×1408). The same art, resized to
+256×256, is `src/main/resources/hoodcraft.png` — the logo NeoForge shows in the in-game mod list.
+
+`docs/branding/banner.jpg` (2448×816) is the wordmark banner. CurseForge has no banner slot of its
+own, but it is the right image for a Modrinth gallery header, a Discord embed, or the top of a
+forum post.
 
 ## 4. Upload the file
 

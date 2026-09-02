@@ -1,6 +1,6 @@
 <div align="center">
 
-# HoodCraft
+![HoodCraft — Follow the bird. Hatch your mascot.](docs/branding/banner.jpg)
 
 **Tameable pets modelled on the mascots of Robinhood Chain tokens.**
 
@@ -13,8 +13,6 @@
 <!-- Add once the CurseForge project exists — replace PROJECT_ID with the numeric id from the project page:
 [![CurseForge](https://img.shields.io/curseforge/dt/PROJECT_ID?style=flat-square&logo=curseforge&logoColor=white&label=downloads)](https://www.curseforge.com/minecraft/mc-mods/hoodcraft)
 -->
-
-![Three Robins perched on a log against a clear sky, with a fourth in flight](docs/screenshots/hero.png)
 
 </div>
 
@@ -45,6 +43,8 @@ brush has somewhere new to be used. Vanilla's suspicious sand still works as it 
 > until there is a second pet worth finding.
 
 ## Screenshots
+
+![Three Robins perched on a log against a clear sky, with a fourth in flight](docs/screenshots/hero.png)
 
 | | |
 |:--:|:--:|
