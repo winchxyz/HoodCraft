@@ -51,7 +51,7 @@ What a Robin drops. It is the only feather the Hood Brush can be built from.
 
 **The Hood Brush**
 
-A Black Feather, a copper ingot and a stick. It handles exactly like the vanilla brush — 64 uses,
+A Black Feather, a gold ingot and a stick. It handles exactly like the vanilla brush — 64 uses,
 4.8 seconds a block — but it uncovers a different set of things: a nautilus shell, an emerald,
 leather boots or a stone hoe.
 

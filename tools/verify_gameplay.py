@@ -174,7 +174,7 @@ def main() -> int:
 
     # ------------------------------------------------------- 5. the recipe
     # Driven through a Crafter rather than asserted from the JSON: a recipe that parses can still
-    # fail to match. The pattern is one column - feather, copper ingot, stick - so it goes in the
+    # fail to match. The pattern is one column - feather, gold ingot, stick - so it goes in the
     # left-hand column of the 3x3 grid, slots 0, 3 and 6.
     print("\n5. Hood Brush recipe")
     r.cmd("kill @e[type=item]")
@@ -182,7 +182,7 @@ def main() -> int:
     r.cmd("setblock 12 199 0 minecraft:stone")
     r.cmd("setblock 12 200 0 minecraft:crafter")
     for slot, item in ((0, "hoodcraft:black_feather"),
-                       (3, "minecraft:copper_ingot"),
+                       (3, "minecraft:gold_ingot"),
                        (6, "minecraft:stick")):
         r.cmd(f"item replace block 12 200 0 container.{slot} with {item}")
     r.cmd("setblock 13 200 0 minecraft:redstone_block")   # rising edge fires the crafter
@@ -190,7 +190,7 @@ def main() -> int:
     # Checked world-wide rather than within a radius: the crafter ejects the result into open air
     # at y=200 and it falls fast, so even a few ticks put it outside any sensible radius. All other
     # item entities were cleared a moment ago, so anything found here is the thing just crafted.
-    check("crafts a Hood Brush from feather + copper + stick",
+    check("crafts a Hood Brush from feather + gold + stick",
           r.passed('execute if entity @e[type=item,nbt={Item:{id:"hoodcraft:hood_brush"}}]'),
           r.cmd("data get block 12 200 0 Items").strip()[-60:])
 

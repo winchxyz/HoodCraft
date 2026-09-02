@@ -31,7 +31,7 @@ forest biomes.
 
 **The Black Feather** — what a Robin drops, and the only feather the Hood Brush can be built from.
 
-**The Hood Brush** — a feather, a copper ingot and a stick. Handles exactly like the vanilla brush
+**The Hood Brush** — a feather, a gold ingot and a stick. Handles exactly like the vanilla brush
 (64 uses, 4.8 seconds a block) but uncovers a different set of things: a nautilus shell, an emerald,
 leather boots or a stone hoe.
 
