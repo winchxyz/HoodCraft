@@ -22,6 +22,8 @@
 
 A small, self-contained progression that reuses Minecraft's own archaeology loop.
 
+<img src="docs/branding/robin-avatar.jpg" align="right" width="210" alt="Close-up of the Robin: a green pixel-art bird with a swept crest and a dark beak">
+
 **The Robin** — a Robinhood-green bird that behaves like a parrot: it flies, perches on your
 shoulder, sits when told, and takes no fall damage. Two things set it apart. It is tamed with
 **wheat seeds** rather than cookies, and unlike a parrot, a tamed pair can be **bred**. Spawns in
