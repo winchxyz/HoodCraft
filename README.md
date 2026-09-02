@@ -48,8 +48,8 @@ brush has somewhere new to be used. Vanilla's suspicious sand still works as it 
 
 | | |
 |:--:|:--:|
-| ![A Robin perched, seen in profile](docs/screenshots/portrait.png) | ![The Hood Brush held over suspicious gravel](docs/screenshots/brush.png) |
-| **The Robin** — 6 hearts, tamed with wheat seeds | **The Hood Brush** — over suspicious gravel |
+| ![A Robin perched, seen in profile](docs/screenshots/portrait.png) | ![The Hood Brush held over patches of suspicious sand and gravel](docs/screenshots/brush.png) |
+| **The Robin** — 6 hearts, tamed with wheat seeds | **The Hood Brush** — over suspicious sand and gravel |
 | ![Three Robin Eggs at different hatch stages](docs/screenshots/egg.png) | ![The Black Feather, Hood Brush and Robin Egg as dropped items](docs/screenshots/items.png) |
 | **Hatch stages** on wool, slime and honey *(WIP)* | **Black Feather, Hood Brush, Robin Egg** |
 
@@ -74,9 +74,9 @@ there is **no dependency on Citadel** even though the geometry originates in a m
 | Egg hatch *(WIP)* | 30 min, 15 on wool, 5 on slime or honey |
 | Suspicious gravel | 30% of ancient-city cobbled deepslate |
 
-Suspicious sand or gravel placed by a player yields nothing to the Hood Brush, exactly as it yields
-nothing to a vanilla one, and a block that has already been brushed keeps the item it rolled — so
-its loot cannot be farmed or re-rolled.
+Unlike a vanilla brush, the Hood Brush also works on suspicious blocks you placed yourself — handy
+for testing, and no exploit, since neither block can be obtained in survival at all. A block that
+has already been brushed keeps whatever it rolled, so results cannot be re-rolled.
 
 ## Building from source
 

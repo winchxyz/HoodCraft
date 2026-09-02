@@ -36,10 +36,8 @@ import net.minecraft.world.phys.Vec3;
  * nautilus shell, an emerald, leather boots, a stone hoe, or - at 6.7%, the same odds vanilla gives
  * a sniffer egg - one of the mod's pet eggs.
  *
- * <p>The swap deliberately happens only on blocks that still carry a loot table of their own, which
- * is to say naturally generated ones. Suspicious sand or gravel placed by a player has no loot table
- * and is left alone, so it yields nothing here exactly as it yields nothing to a vanilla brush. That
- * is what stops the eggs from being farmable.
+ * <p>Unlike a vanilla brush it works on player-placed suspicious blocks too - see
+ * {@link #primeHoodLoot} for why that restriction is not worth keeping here.
  */
 public class HoodBrushItem extends Item {
 
@@ -107,9 +105,7 @@ public class HoodBrushItem extends Item {
             return;
         }
 
-        swapInHoodLoot(brushable, level);
-
-        if (brushable.brush(level.getGameTime(), player, blockHit.getDirection())) {
+        if (brushStroke(brushable, level, player, blockHit.getDirection())) {
             EquipmentSlot slot = stack.equals(player.getItemBySlot(EquipmentSlot.OFFHAND))
                     ? EquipmentSlot.OFFHAND
                     : EquipmentSlot.MAINHAND;
@@ -118,19 +114,55 @@ public class HoodBrushItem extends Item {
     }
 
     /**
-     * Point an unbrushed, naturally generated block at the HoodCraft loot table.
+     * One brush stroke: make sure the block is pointed at the HoodCraft loot table, then brush it.
      *
-     * <p>A block whose loot table is already null is either player-placed (never had one) or already
-     * unpacked by an earlier brush (which nulls it and fixes the item). Either way it must be left
-     * as it is: the first case keeps eggs unfarmable, the second stops a player from re-rolling a
-     * result they did not like by switching brushes.
+     * <p>Separated out so the whole stroke can be driven from somewhere other than a player holding
+     * right-click. Brushing is a use-item-over-time action with no command equivalent, and
+     * synthetic mouse input does not reach the game reliably, so this is the seam any automated
+     * check of the loot has to go through.
+     *
+     * @return true when this stroke completed the dig, which is when durability is spent
      */
-    private static void swapInHoodLoot(BrushableBlockEntity brushable, Level level) {
-        if (brushable.lootTable == null) {
+    public static boolean brushStroke(BrushableBlockEntity brushable, Level level,
+                                      Player player, Direction face) {
+        return brushStroke(brushable, level, player, face, level.getGameTime());
+    }
+
+    /**
+     * As above, but with the tick to brush at supplied. {@code brush} ignores anything inside its
+     * own ten-tick cooldown, so a caller landing several strokes in one game tick has to advance
+     * this itself.
+     */
+    public static boolean brushStroke(BrushableBlockEntity brushable, Level level,
+                                      Player player, Direction face, long gameTime) {
+        primeHoodLoot(brushable, level);
+        return brushable.brush(gameTime, player, face);
+    }
+
+    /**
+     * Point an unbrushed suspicious block at the HoodCraft loot table.
+     *
+     * <p>This deliberately covers player-placed blocks as well as naturally generated ones. Vanilla
+     * gives player-placed suspicious sand and gravel nothing, to stop sniffer eggs being farmed —
+     * but neither block can actually be obtained in survival, since both have empty loot tables and
+     * drop nothing when broken. The only way one gets placed by hand is creative or a command, where
+     * the loot could simply be spawned anyway. So the restriction protects nothing here, and its one
+     * visible effect was a brush that appeared broken in a test world.
+     *
+     * <p>What does still matter is not re-rolling a block mid-dig. {@code unpackLootTable} runs
+     * before the brush counter increments and nulls the table once it has rolled, so a zero count
+     * with no item held means nothing has been rolled yet — and only then is it safe to prime.
+     */
+    private static void primeHoodLoot(BrushableBlockEntity brushable, Level level) {
+        if (brushable.lootTable != null) {
+            // Naturally generated and untouched: keep the block's own seed so its contents stay
+            // stable no matter how many times a player starts and abandons the dig.
+            brushable.setLootTable(HCLootTables.HOOD_BRUSHING, brushable.lootTableSeed);
             return;
         }
-        long seed = brushable.lootTableSeed != 0L ? brushable.lootTableSeed : level.getRandom().nextLong();
-        brushable.setLootTable(HCLootTables.HOOD_BRUSHING, seed);
+        if (brushable.brushCount == 0 && brushable.getItem().isEmpty()) {
+            brushable.setLootTable(HCLootTables.HOOD_BRUSHING, level.getRandom().nextLong());
+        }
     }
 
     private HitResult calculateHitResult(Player player) {

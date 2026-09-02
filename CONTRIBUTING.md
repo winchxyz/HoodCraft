@@ -74,6 +74,21 @@ previous run left one inherits the old timer and is measured against the wrong s
 sniffer egg behaves the same way, so this is worth knowing rather than working around: two eggs
 placed in the same spot within one hatch window share a clock.
 
+**Brushing needs its own pass, and a connected client.** It is a use-item-over-time action driven
+by holding right-click: there is no vanilla command equivalent, and synthetic mouse input does not
+reach the game reliably. So the mod registers a `/hcbrush <pos>` command that runs a full dig
+through the real item code, gated on `FMLEnvironment.production` so it exists only in dev.
+
+```bash
+./gradlew runServer          # one shell
+./gradlew runScreenshots     # another - joins as "Dev", which the brush routine needs
+python tools/verify_brushing.py
+```
+
+This gap is not hypothetical. The loot table rolling correctly says nothing about whether the item
+ever reaches the ground, and the mod shipped once with a brush that dug through blocks and dropped
+nothing at all.
+
 **Run the client too, and read its log.** A headless server never builds an entity renderer, so it
 boots happily past a model that cannot bake — and an invisible mob is not something a server-side
 check will ever report. Grep a `runClient` log for `Failed to create model`.
@@ -166,7 +181,13 @@ will conflict: last datapack loaded wins, and the loser's changes vanish silentl
 
 ## Access transformer
 
-`META-INF/accesstransformer.cfg` opens up `BrushableBlockEntity.lootTable` and `lootTableSeed`. The
-Hood Brush needs to see which loot table a suspicious block is carrying so it can tell a naturally
-generated block (which has one) from a player-placed or already-brushed one (which does not), and
-swap in the HoodCraft table only in the first case. That check is what keeps the loot unfarmable.
+`META-INF/accesstransformer.cfg` opens up `BrushableBlockEntity.lootTable`, `lootTableSeed` and
+`brushCount`. The Hood Brush swaps its own loot table onto a suspicious block just before brushing
+it, and has to know what state that block is in first: which table it already carries, and whether
+anything has been rolled out of it yet.
+
+It deliberately primes player-placed blocks too, which vanilla refuses to do. Vanilla's reason is
+to stop sniffer eggs being farmed, but neither suspicious sand nor gravel can be obtained in
+survival — both have empty loot tables and drop nothing when broken — so the only way one gets
+placed by hand is creative or a command, where the loot could simply be spawned anyway. The
+restriction protected nothing and its one visible effect was a brush that appeared broken.

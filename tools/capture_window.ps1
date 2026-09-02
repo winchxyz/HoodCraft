@@ -52,11 +52,22 @@ public class Win {
 # leaking into the shot.
 [void][Win]::SetProcessDPIAware()
 
-$proc = Get-Process | Where-Object { $_.MainWindowTitle -like "*$TitleMatch*" } | Select-Object -First 1
-if ($null -eq $proc) {
+# Filtered to java processes as well as the title: a browser tab showing a page about the mod
+# matches "Minecraft" just as happily as the game does.
+$candidates = @(Get-Process -Name java -ErrorAction SilentlyContinue |
+    Where-Object { $_.MainWindowTitle -like "*$TitleMatch*" })
+if ($candidates.Count -eq 0) {
     Write-Error "No window whose title matches '$TitleMatch'. Is the client running?"
     exit 1
 }
+if ($candidates.Count -gt 1) {
+    # Picking the first of several silently is how input and screenshots end up going to a stale
+    # client sitting on the title screen while the real one plays on, so refuse to guess.
+    Write-Error ("More than one window matches '$TitleMatch'; close the extras or pass -TitleMatch:`n  " +
+        (($candidates | ForEach-Object { "pid $($_.Id): $($_.MainWindowTitle)" }) -join "`n  "))
+    exit 1
+}
+$proc = $candidates[0]
 $h = $proc.MainWindowHandle
 Write-Output "window: '$($proc.MainWindowTitle)' (pid $($proc.Id))"
 

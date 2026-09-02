@@ -143,20 +143,32 @@ def scene_portrait(r: Rcon) -> None:
 
 
 def scene_brush(r: Rcon) -> None:
-    """The Hood Brush in hand over suspicious gravel, in ancient-city stonework."""
+    """The Hood Brush in hand, over a patch of suspicious sand and gravel."""
     clear_stage(r)
-    floor(r, "minecraft:cobbled_deepslate")
-    backdrop(r, "minecraft:deepslate_bricks", at_z=5, height=6)
-    r.cmd(f"setblock {STAGE_X - 3} {FLOOR_Y + 3} {STAGE_Z + 4} minecraft:soul_lantern")
-    r.cmd(f"setblock {STAGE_X + 4} {FLOOR_Y + 3} {STAGE_Z + 4} minecraft:soul_lantern")
-    # Suspicious gravel reads as ordinary gravel from any distance, so the shot is close and looks
-    # down at it, with plain gravel alongside for the contrast that is the whole point.
-    for dx in (-2, -1, 0, 1):
-        r.cmd(f"setblock {STAGE_X + dx} {FLOOR_Y} {STAGE_Z + 2} minecraft:suspicious_gravel")
-    r.cmd(f"setblock {STAGE_X + 2} {FLOOR_Y} {STAGE_Z + 2} minecraft:gravel")
-    r.cmd(f"setblock {STAGE_X - 3} {FLOOR_Y} {STAGE_Z + 2} minecraft:gravel")
+    # A dark floor so the sand and gravel patches read as patches rather than as more floor - laid
+    # two thick, because suspicious sand and gravel are gravity-affected and fall straight through
+    # a single layer with air beneath it.
+    r.cmd(f"fill {STAGE_X - STAGE_R} {FLOOR_Y - 1} {STAGE_Z - STAGE_R} "
+          f"{STAGE_X + STAGE_R} {FLOOR_Y - 1} {STAGE_Z + STAGE_R} minecraft:deepslate_bricks")
+    floor(r, "minecraft:deepslate_bricks")
+    backdrop(r, "minecraft:deepslate_tiles", at_z=6, height=6)
+    r.cmd(f"setblock {STAGE_X - 4} {FLOOR_Y + 3} {STAGE_Z + 5} minecraft:soul_lantern")
+    r.cmd(f"setblock {STAGE_X + 5} {FLOOR_Y + 3} {STAGE_Z + 5} minecraft:soul_lantern")
+
+    # Suspicious blocks on the left, their ordinary counterparts on the right, so the difference
+    # is visible in one frame instead of having to be taken on trust.
+    for dx in (-3, -2):
+        for dz in (2, 3):
+            r.cmd(f"setblock {STAGE_X + dx} {FLOOR_Y} {STAGE_Z + dz} minecraft:suspicious_gravel")
+    for dx in (-1, 0):
+        for dz in (2, 3):
+            r.cmd(f"setblock {STAGE_X + dx} {FLOOR_Y} {STAGE_Z + dz} minecraft:suspicious_sand")
+    for dx in (1, 2):
+        r.cmd(f"setblock {STAGE_X + dx} {FLOOR_Y} {STAGE_Z + 2} minecraft:gravel")
+        r.cmd(f"setblock {STAGE_X + dx} {FLOOR_Y} {STAGE_Z + 3} minecraft:sand")
+
     hold(r, "hoodcraft:hood_brush")
-    stand(r, -0.5, -0.4, 0, 32)
+    stand(r, -0.5, 0.2, 0, 34)
 
 
 def scene_egg(r: Rcon) -> None:
