@@ -1,0 +1,31 @@
+{
+  "entity.robin.ambient": {
+    "subtitle": "subtitles.entity.robin.ambient",
+    "sounds": [
+      "hoodcraft:robin_idle_0",
+      "hoodcraft:robin_idle_1",
+      "hoodcraft:robin_idle_2"
+    ]
+  },
+  "entity.robin.hurt": {
+    "subtitle": "subtitles.entity.robin.hurt",
+    "sounds": [
+      "hoodcraft:robin_hurt_0",
+      "hoodcraft:robin_hurt_1"
+    ]
+  },
+  "entity.robin.death": {
+    "subtitle": "subtitles.entity.robin.death",
+    "sounds": [
+      "hoodcraft:robin_death"
+    ]
+  },
+  "entity.robin.song": {
+    "subtitle": "subtitles.entity.robin.song",
+    "sounds": [
+      "hoodcraft:robin_song_0",
+      "hoodcraft:robin_song_1",
+      "hoodcraft:robin_song_2"
+    ]
+  }
+}

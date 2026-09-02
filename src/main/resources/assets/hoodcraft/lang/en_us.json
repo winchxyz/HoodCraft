@@ -1,0 +1,12 @@
+{
+  "itemGroup.hoodcraft.main": "HoodCraft",
+  "entity.hoodcraft.robin": "Robin",
+  "block.hoodcraft.robin_egg": "Robin Egg (WIP)",
+  "item.hoodcraft.black_feather": "Black Feather",
+  "item.hoodcraft.hood_brush": "Hood Brush",
+  "item.hoodcraft.robin_spawn_egg": "Robin Spawn Egg",
+  "subtitles.entity.robin.ambient": "Robin chirps",
+  "subtitles.entity.robin.hurt": "Robin hurts",
+  "subtitles.entity.robin.death": "Robin dies",
+  "subtitles.entity.robin.song": "Robin sings"
+}

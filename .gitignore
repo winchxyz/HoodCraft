@@ -1,0 +1,43 @@
+# Build
+build/
+out/
+classes/
+src/generated/
+
+# Gradle
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+# NeoForge / ModDevGradle
+run/
+runs/
+run-data/
+repo/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.classpath
+.project
+.settings/
+eclipse/
+
+# Reference material — Alex's Mobs jar and its extracted contents.
+# GPL-3.0 upstream; kept locally for reference only, never redistributed.
+alex-mods/
+
+# Python tooling
+__pycache__/
+*.pyc
+
+# Reference sprites pulled off the Minecraft Wiki while matching vanilla behaviour, plus a stray
+# editor backup. None are used by sync_assets.py, and wiki media is CC BY-NC-SA — not compatible
+# with GPL-3.0 and not ours to redistribute. They stay local.
+textures/BlockSprite_*.png
+textures/Invicon_Sniffer_Egg.webp
+textures/*.zip
+# Alex's Mobs' unused "shiny" variant, kept only for reference.
+textures/robin_bird_shiny.png

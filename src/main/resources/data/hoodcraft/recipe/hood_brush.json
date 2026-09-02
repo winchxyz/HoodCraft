@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "X",
+    "#",
+    "I"
+  ],
+  "key": {
+    "X": {
+      "item": "hoodcraft:black_feather"
+    },
+    "#": {
+      "item": "minecraft:copper_ingot"
+    },
+    "I": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "id": "hoodcraft:hood_brush",
+    "count": 1
+  }
+}
