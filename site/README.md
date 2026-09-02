@@ -5,8 +5,8 @@ server weighs each vote by token balance at a pinned block, and the winner
 becomes the mod's second pet.
 
 Built on the mod's own identity: the palette is sampled from the Robin's
-textures, the item art is the shipped 16×16 sprites, and every surface uses
-Minecraft's block bevel rather than a card shadow.
+textures, and every surface uses Minecraft's block bevel rather than a card
+shadow.
 
 ---
 
@@ -36,7 +36,7 @@ Ships with four sealed slots. Replace them with the real mascots:
   ticker: null,
   blurb: "...",
   kit: ["..."],
-  art: null,             // "/mascots/whatever.jpg", or null for the sealed egg
+  art: "/candidates/gold.jpg",      // or null to fall back to a drawn egg
   status: "sealed",      // "announced" once it has a name
   palette: ["#F0B23A", "#846426"],  // light face, dark face
 }
@@ -46,9 +46,13 @@ Ships with four sealed slots. Replace them with the real mascots:
 orphans every vote already cast for it. Pick ids you can live with before the
 round opens.
 
-A candidate with `art: null` renders a pixel egg in its own palette on a
-recoloured missing-texture checker. That is the deliberate "not announced yet"
-state, not a fallback for a broken image.
+Each slot ships with a colour-matched egg render in `public/candidates/`.
+Set `art: null` on a slot with no artwork and it falls back to a drawn pixel
+egg in its palette on a recoloured missing-texture checker -- a deliberate
+"not announced yet" state rather than a broken image.
+
+Swapping an image? **Use a new filename.** Next's image optimiser caches by
+URL, so new bytes under an old name keep serving the old picture.
 
 ### 2. The token — `.env.local`
 
@@ -125,17 +129,87 @@ npm run test:e2e     # in another
 
 ---
 
-## Deploying
+## Can the site steal anyone's funds?
 
-Set `APP_ORIGIN` to the real origin. Sign-in messages are bound to it, so
-getting it wrong makes every signature fail.
+No, and not because of a promise -- because of what it is able to ask for.
 
-**On the vote store:** votes live in SQLite via Node's built-in `node:sqlite`,
-which needs a persistent filesystem. That rules out serverless platforms whose
-disks reset between invocations — on Vercel or similar, votes will silently
-vanish. Deploy to something with a real disk (a VM, or a container with a
-mounted volume), or swap [`lib/db.ts`](lib/db.ts) for Postgres. The module is
-small and every query is in that one file.
+The site only ever calls `personal_sign`. That produces a signature over a
+plain text message. It cannot move a token, cannot approve a spender, and
+cannot touch a contract. There is no `eth_sendTransaction` anywhere in this
+codebase, the server holds no private keys, and nobody is ever asked for a seed
+phrase. Even a total compromise of the server gets an attacker the vote
+database -- which is public information anyway -- and nothing else.
+
+**The real risk is different, and worth understanding.** If someone takes over
+the domain or the deployment, they can serve a page that asks a visitor's
+wallet for something else: a transaction, or a token approval. Visitors who are
+used to signing here may approve it. That is how wallet drainers work in
+practice -- they do not break cryptography, they get a person to sign
+something.
+
+So the security work is about keeping control of what gets served:
+
+- **A strict Content-Security-Policy** ([`proxy.ts`](proxy.ts)) with a
+  per-request nonce and `strict-dynamic`. An injected `<script>` does not run,
+  even if an attacker gets HTML onto the page. `connect-src 'self'` means the
+  page cannot talk to any third-party endpoint, so nothing can be exfiltrated
+  to one either. `frame-ancestors 'none'` stops the page being framed to
+  clickjack a wallet prompt.
+- **No third-party JavaScript at all.** No analytics, no tag manager, no CDN
+  script, no wallet SDK. Wallets are found through EIP-6963, which is a browser
+  event, not a download. Every third-party script is someone else's ability to
+  change your page; there are none here, and it is worth keeping it that way.
+- **Four runtime dependencies**: `next`, `react`, `react-dom`, `viem`. A small
+  dependency tree is a small supply-chain surface.
+- **Lock down the accounts.** Realistically the most likely way this gets
+  attacked is not the code -- it is the registrar or the Railway login. Turn on
+  2FA for both, and enable registrar/transfer lock on the domain.
+
+If you ever add a feature that needs a transaction, that changes this analysis
+completely. Until then, the honest summary is: signing in here is as safe as
+signing a message can be, and the thing to guard is the deployment.
+
+---
+
+## Deploying to Railway
+
+Railway works because it offers a **persistent volume**, which this app needs.
+
+1. **New project -> Deploy from GitHub repo**, pick this repository.
+2. **Settings -> Root Directory: `site`** (the app is not at the repo root).
+3. **Add a Volume**, mount path `/data`.
+4. **Variables** (Settings -> Variables):
+
+   ```ini
+   DATABASE_PATH=/data/votes.db      # must be inside the volume
+   APP_ORIGIN=https://your-domain    # exact public origin, no trailing slash
+   VOTE_MODE=token
+   CHAIN_ID=...
+   RPC_URL=...                       # secret; never NEXT_PUBLIC_
+   TOKEN_ADDRESS=...
+   TOKEN_SNAPSHOT_BLOCK=...
+   ```
+5. **Settings -> Networking -> Custom Domain**, then add the CNAME Railway
+   gives you at your registrar.
+6. Update `APP_ORIGIN` to the custom domain and redeploy.
+
+[`railway.json`](railway.json) sets the build and start commands, a health
+check on `/api/results`, and pins `numReplicas` to 1.
+
+**Three ways to lose every vote, all avoidable:**
+
+- **No volume, or `DATABASE_PATH` outside it.** The container filesystem is
+  wiped on every deploy. The database must live under `/data`.
+- **More than one replica.** SQLite is one file on one disk; a second instance
+  cannot share it. Scale up only after moving [`lib/db.ts`](lib/db.ts) to
+  Postgres -- every query is in that one file.
+- **`APP_ORIGIN` not matching the real origin.** Sign-in messages are bound to
+  it, so a mismatch makes every signature fail. Symptom: nobody can sign in.
+
+On the first deploy to a new domain, consider setting `CSP_REPORT_ONLY=true`.
+The policy is then reported but not enforced, so if some wallet trips it you
+see the violation in the browser console instead of a broken site. Remove the
+variable once you have connected a wallet successfully.
 
 Requires **Node 22.5+** for `node:sqlite`; developed against Node 24.
 
