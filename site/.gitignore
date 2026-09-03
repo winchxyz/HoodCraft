@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# the vote database - never commit real votes
+/data
+
 # next.js
 /.next/
 /out/

@@ -176,9 +176,8 @@ signing a message can be, and the thing to guard is the deployment.
 Railway works because it offers a **persistent volume**, which this app needs.
 
 1. **New project -> Deploy from GitHub repo**, pick this repository.
-2. **Settings -> Root Directory: `site`** (the app is not at the repo root).
-3. **Add a Volume**, mount path `/data`.
-4. **Variables** (Settings -> Variables):
+2. **Add a Volume**, mount path `/data`.
+3. **Variables** (Settings -> Variables):
 
    ```ini
    DATABASE_PATH=/data/votes.db      # must be inside the volume
@@ -189,9 +188,9 @@ Railway works because it offers a **persistent volume**, which this app needs.
    TOKEN_ADDRESS=...
    TOKEN_SNAPSHOT_BLOCK=...
    ```
-5. **Settings -> Networking -> Custom Domain**, then add the CNAME Railway
+4. **Settings -> Networking -> Custom Domain**, then add the CNAME Railway
    gives you at your registrar.
-6. Update `APP_ORIGIN` to the custom domain and redeploy.
+5. Update `APP_ORIGIN` to the custom domain and redeploy.
 
 [`railway.json`](railway.json) sets the build and start commands, a health
 check on `/api/results`, and pins `numReplicas` to 1.
