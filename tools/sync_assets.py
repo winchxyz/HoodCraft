@@ -34,10 +34,10 @@ MAPPING: list[tuple[str, str, tuple[int, int]]] = [
     # Source paths are relative to textures/, which is organised one folder per pet.
 
     # --- Ray -------------------------------------------------------------
-    ("jay/ray_bird.png", "entity/ray.png", (64, 64)),
-    ("jay/Invicon_Ray_Spawn_Egg.png", "item/ray_spawn_egg.png", (16, 16)),
-    ("jay/Ray_Feather.png", "item/black_feather.png", (16, 16)),
-    ("jay/Ray_brush.png", "item/hood_brush.png", (16, 16)),
+    ("ray/ray_bird.png", "entity/ray.png", (64, 64)),
+    ("ray/Invicon_Ray_Spawn_Egg.png", "item/ray_spawn_egg.png", (16, 16)),
+    ("ray/Ray_Feather.png", "item/black_feather.png", (16, 16)),
+    ("ray/Ray_brush.png", "item/hood_brush.png", (16, 16)),
 
     # --- Cash Cat ----------------------------------------------------------
     # 64x32, the vanilla cat sheet. The model splits the ears onto their own parts but keeps their

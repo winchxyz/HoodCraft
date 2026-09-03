@@ -37,6 +37,13 @@ __pycache__/
 # Reference sprites pulled off the Minecraft Wiki while matching vanilla behaviour, plus a stray
 # editor backup. None are used by sync_assets.py, and wiki media is CC BY-NC-SA — not compatible
 # with GPL-3.0 and not ours to redistribute. They stay local.
+# Matched at any depth. These were written for a flat textures/ folder and silently stopped
+# matching once the art was organised into per-pet subfolders, which published them.
+textures/**/BlockSprite_*.png
+textures/**/Invicon_Sniffer_Egg.webp
+textures/**/Ragdoll_Cat_*.webp
+textures/**/*.zip
+textures/**/ray_bird_shiny.png
 textures/BlockSprite_*.png
 textures/Invicon_Sniffer_Egg.webp
 textures/*.zip
