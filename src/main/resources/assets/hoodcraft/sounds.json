@@ -1,31 +1,31 @@
 {
-  "entity.robin.ambient": {
-    "subtitle": "subtitles.entity.robin.ambient",
+  "entity.ray.ambient": {
+    "subtitle": "subtitles.entity.ray.ambient",
     "sounds": [
-      "hoodcraft:robin_idle_0",
-      "hoodcraft:robin_idle_1",
-      "hoodcraft:robin_idle_2"
+      "hoodcraft:ray_idle_0",
+      "hoodcraft:ray_idle_1",
+      "hoodcraft:ray_idle_2"
     ]
   },
-  "entity.robin.hurt": {
-    "subtitle": "subtitles.entity.robin.hurt",
+  "entity.ray.hurt": {
+    "subtitle": "subtitles.entity.ray.hurt",
     "sounds": [
-      "hoodcraft:robin_hurt_0",
-      "hoodcraft:robin_hurt_1"
+      "hoodcraft:ray_hurt_0",
+      "hoodcraft:ray_hurt_1"
     ]
   },
-  "entity.robin.death": {
-    "subtitle": "subtitles.entity.robin.death",
+  "entity.ray.death": {
+    "subtitle": "subtitles.entity.ray.death",
     "sounds": [
-      "hoodcraft:robin_death"
+      "hoodcraft:ray_death"
     ]
   },
-  "entity.robin.song": {
-    "subtitle": "subtitles.entity.robin.song",
+  "entity.ray.song": {
+    "subtitle": "subtitles.entity.ray.song",
     "sounds": [
-      "hoodcraft:robin_song_0",
-      "hoodcraft:robin_song_1",
-      "hoodcraft:robin_song_2"
+      "hoodcraft:ray_song_0",
+      "hoodcraft:ray_song_1",
+      "hoodcraft:ray_song_2"
     ]
   },
   "entity.cash_cat.sad": {

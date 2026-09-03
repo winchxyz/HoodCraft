@@ -2,10 +2,10 @@ package com.hoodcraft.client;
 
 import com.hoodcraft.HoodCraft;
 import com.hoodcraft.client.model.CashCatModel;
-import com.hoodcraft.client.model.RobinModel;
+import com.hoodcraft.client.model.RayModel;
 import com.hoodcraft.client.renderer.CashCatRenderer;
-import com.hoodcraft.client.renderer.RobinOnShoulderLayer;
-import com.hoodcraft.client.renderer.RobinRenderer;
+import com.hoodcraft.client.renderer.RayOnShoulderLayer;
+import com.hoodcraft.client.renderer.RayRenderer;
 import com.hoodcraft.registry.HCEntities;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.PlayerSkin;
@@ -19,13 +19,13 @@ public final class HCClientEvents {
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(RobinModel.LAYER, RobinModel::createBodyLayer);
+        event.registerLayerDefinition(RayModel.LAYER, RayModel::createBodyLayer);
         event.registerLayerDefinition(CashCatModel.LAYER, CashCatModel::createBodyLayer);
     }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(HCEntities.ROBIN.get(), RobinRenderer::new);
+        event.registerEntityRenderer(HCEntities.RAY.get(), RayRenderer::new);
         event.registerEntityRenderer(HCEntities.CASH_CAT.get(), CashCatRenderer::new);
     }
 
@@ -33,7 +33,7 @@ public final class HCClientEvents {
     public static void addPlayerLayers(EntityRenderersEvent.AddLayers event) {
         for (PlayerSkin.Model skin : event.getSkins()) {
             if (event.getSkin(skin) instanceof PlayerRenderer renderer) {
-                renderer.addLayer(new RobinOnShoulderLayer(renderer, event.getEntityModels()));
+                renderer.addLayer(new RayOnShoulderLayer(renderer, event.getEntityModels()));
             }
         }
     }

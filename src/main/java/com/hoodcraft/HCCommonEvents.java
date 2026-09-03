@@ -1,7 +1,7 @@
 package com.hoodcraft;
 
 import com.hoodcraft.entity.CashCat;
-import com.hoodcraft.entity.Robin;
+import com.hoodcraft.entity.Ray;
 import com.hoodcraft.registry.HCEntities;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.SpawnPlacementTypes;
@@ -33,13 +33,13 @@ public final class HCCommonEvents {
 
     @SubscribeEvent
     public static void createAttributes(EntityAttributeCreationEvent event) {
-        event.put(HCEntities.ROBIN.get(), Robin.createAttributes().build());
+        event.put(HCEntities.RAY.get(), Ray.createAttributes().build());
         event.put(HCEntities.CASH_CAT.get(), CashCat.createAttributes().build());
     }
 
     @SubscribeEvent
     public static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
-        event.register(HCEntities.ROBIN.get(),
+        event.register(HCEntities.RAY.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 (type, level, spawnType, pos, random) ->

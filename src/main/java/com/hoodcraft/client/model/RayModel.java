@@ -1,7 +1,7 @@
 package com.hoodcraft.client.model;
 
 import com.hoodcraft.HoodCraft;
-import com.hoodcraft.entity.Robin;
+import com.hoodcraft.entity.Ray;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
@@ -16,20 +16,20 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 
 /**
- * The Robin's model.
+ * The Ray's model.
  *
  * <p>The cube layout is ported from Alex's Mobs' Blue Jay (GPL-3.0), rebuilt against vanilla's
  * {@link LayerDefinition} so the mod carries no runtime dependency on Citadel. The animation is
- * written fresh in the vanilla parrot's idiom, since a Robin is meant to read as a parrot.
+ * written fresh in the vanilla parrot's idiom, since a Ray is meant to read as a parrot.
  *
  * <p>Every part rests at a non-zero angle, so each frame restores the rest pose first and animates
  * as a delta on top of it. Overwriting the rotations outright - as vanilla's own bird models do,
  * since theirs rest at zero - would flatten the bird's posture.
  */
-public class RobinModel extends HierarchicalModel<Robin> {
+public class RayModel extends HierarchicalModel<Ray> {
 
     public static final ModelLayerLocation LAYER =
-            new ModelLayerLocation(HoodCraft.id("robin"), "main");
+            new ModelLayerLocation(HoodCraft.id("ray"), "main");
 
     private final ModelPart root;
     private final ModelPart body;
@@ -47,7 +47,7 @@ public class RobinModel extends HierarchicalModel<Robin> {
     private final float crestRestX;
     private final float legRestX;
 
-    public RobinModel(ModelPart root) {
+    public RayModel(ModelPart root) {
         this.root = root;
         // The mesh root is the bare container the layer bakes into; "root" is the bird's own pivot
         // at floor level, which everything else hangs from. Body is a grandchild, not a child.
@@ -125,7 +125,7 @@ public class RobinModel extends HierarchicalModel<Robin> {
     }
 
     @Override
-    public void setupAnim(Robin entity, float limbSwing, float limbSwingAmount,
+    public void setupAnim(Ray entity, float limbSwing, float limbSwingAmount,
                           float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetPose();
 

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "hoodcraft:item/robin_spawn_egg"
+    "layer0": "hoodcraft:item/ray_spawn_egg"
   }
 }

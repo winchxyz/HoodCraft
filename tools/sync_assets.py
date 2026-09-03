@@ -33,11 +33,11 @@ ASSETS = ROOT / "src" / "main" / "resources" / "assets" / "hoodcraft" / "texture
 MAPPING: list[tuple[str, str, tuple[int, int]]] = [
     # Source paths are relative to textures/, which is organised one folder per pet.
 
-    # --- Robin -------------------------------------------------------------
-    ("jay/robin_bird.png", "entity/robin.png", (64, 64)),
-    ("jay/Invicon_Robin_Spawn_Egg.png", "item/robin_spawn_egg.png", (16, 16)),
-    ("jay/Robin_Feather.png", "item/black_feather.png", (16, 16)),
-    ("jay/Robin_brush.png", "item/hood_brush.png", (16, 16)),
+    # --- Ray -------------------------------------------------------------
+    ("jay/ray_bird.png", "entity/ray.png", (64, 64)),
+    ("jay/Invicon_Ray_Spawn_Egg.png", "item/ray_spawn_egg.png", (16, 16)),
+    ("jay/Ray_Feather.png", "item/black_feather.png", (16, 16)),
+    ("jay/Ray_brush.png", "item/hood_brush.png", (16, 16)),
 
     # --- Cash Cat ----------------------------------------------------------
     # 64x32, the vanilla cat sheet. The model splits the ears onto their own parts but keeps their

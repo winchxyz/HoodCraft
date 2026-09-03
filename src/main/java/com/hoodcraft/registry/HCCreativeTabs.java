@@ -19,8 +19,7 @@ public final class HCCreativeTabs {
                     .displayItems((params, output) -> {
                         output.accept(HCItems.BLACK_FEATHER.get());
                         output.accept(HCItems.HOOD_BRUSH.get());
-                        output.accept(HCItems.ROBIN_EGG.get());
-                        output.accept(HCItems.ROBIN_SPAWN_EGG.get());
+                        output.accept(HCItems.RAY_SPAWN_EGG.get());
                         output.accept(HCItems.CASH_CAT_EGG.get());
                         output.accept(HCItems.CASH_CAT_SPAWN_EGG.get());
                     })

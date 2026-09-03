@@ -22,9 +22,9 @@
 
 A small, self-contained progression that reuses Minecraft's own archaeology loop.
 
-<img src="docs/branding/robin-avatar.jpg" align="right" width="210" alt="Close-up of the Robin: a green pixel-art bird with a swept crest and a dark beak">
+<img src="docs/branding/ray-avatar.jpg" align="right" width="210" alt="Close-up of the Ray: a green pixel-art bird with a swept crest and a dark beak">
 
-**The Robin** — a Robinhood-green bird that behaves like a parrot: it flies, perches on your
+**The Ray** — a Robinhood-green bird that behaves like a parrot: it flies, perches on your
 shoulder, sits when told, and takes no fall damage. Two things set it apart. It is tamed with
 **wheat seeds** rather than cookies, and unlike a parrot, a tamed pair can be **bred**. Spawns in
 forest biomes.
@@ -35,22 +35,25 @@ that, and only for one Minecraft day, during which it drops the slouch, stops cr
 like an ordinary cat. Feeding it *any* ingot is also a lottery — one time in ten thousand it coughs
 up a buried treasure map. Creepers and phantoms fear it exactly as they fear a vanilla cat.
 
-**The Black Feather** — what a Robin drops, and the only feather the Hood Brush can be built from.
+**The Black Feather** — what a Ray drops, and the only feather the Hood Brush can be built from.
 
 **The Hood Brush** — a feather, a gold ingot and a stick. Handles exactly like the vanilla brush
 (64 uses, 4.8 seconds a block) but uncovers a different set of things: a nautilus shell, an emerald,
 leather boots, a stone hoe — or, at **6.7%**, a pet egg.
 
-**Pet eggs** — the only way to get one is to brush for it. Place it and wait: 30 minutes to hatch,
-15 on wool, 5 on slime or honey, through three visible cracking stages. The block underneath is
-re-read at every stage, so moving an egg mid-hatch changes the time left.
+**Pet eggs** — brushing is the only way to get one. Place it and wait: 30 minutes to hatch, 15 on
+wool, 5 on slime or honey, through three visible cracking stages. The block underneath is re-read at
+every stage, so moving an egg mid-hatch changes the time left.
+
+Only pets you cannot otherwise find get an egg. The Ray spawns in forests and is where the Black
+Feather comes from, so an egg for it would just be a circular reward; the Cash Cat has one.
 
 **Suspicious gravel in ancient cities** — 30% of the loose cobbled deepslate on their floors, so the
 brush has somewhere new to be used. Vanilla's suspicious sand still works as it always did.
 
 ## Screenshots
 
-![Three Robins perched on a log against a clear sky, with a fourth in flight](docs/screenshots/hero.png)
+![Three Rays perched on a log against a clear sky, with a fourth in flight](docs/screenshots/hero.png)
 
 ![A Cash Cat sitting and weeping, with a cheered one standing behind it](docs/screenshots/cashcat.png)
 
@@ -58,17 +61,17 @@ brush has somewhere new to be used. Vanilla's suspicious sand still works as it 
 
 | | |
 |:--:|:--:|
-| ![A Robin perched, seen in profile](docs/screenshots/portrait.png) | ![The Hood Brush held over patches of suspicious sand and gravel](docs/screenshots/brush.png) |
-| **The Robin** — 6 hearts, tamed with wheat seeds | **The Hood Brush** — over suspicious sand and gravel |
-| ![Three Robin Eggs at different hatch stages](docs/screenshots/egg.png) | ![The Black Feather, Hood Brush and Robin Egg as dropped items](docs/screenshots/items.png) |
-| **Hatch stages** on wool, slime and honey | **Black Feather, Hood Brush, Robin Egg** |
+| ![A Ray perched, seen in profile](docs/screenshots/portrait.png) | ![The Hood Brush held over patches of suspicious sand and gravel](docs/screenshots/brush.png) |
+| **The Ray** — 6 hearts, tamed with wheat seeds | **The Hood Brush** — over suspicious sand and gravel |
+| ![Three Cash Cat Eggs at different hatch stages](docs/screenshots/egg.png) | ![The Black Feather, Hood Brush and Cash Cat Egg as dropped items](docs/screenshots/items.png) |
+| **Hatch stages** on honey, slime and wool | **Black Feather, Hood Brush, Cash Cat Egg** |
 
 ## Installing
 
 1. Install [NeoForge 21.1.x](https://neoforged.net/) for Minecraft **1.21.1**.
 2. Drop `hoodcraft-x.y.z.jar` into your `mods` folder.
 
-No other mods are required. The Robin's model was rebuilt against vanilla rather than copied, so
+No other mods are required. The Ray's model was rebuilt against vanilla rather than copied, so
 there is **no dependency on Citadel** even though the geometry originates in a mod that needs it.
 The Cash Cat is built on vanilla's own cat mesh, reposed.
 
@@ -76,7 +79,7 @@ The Cash Cat is built on vanilla's own cat mesh, reposed.
 
 | | |
 | --- | --- |
-| Robin | 6 hearts · wheat seeds to tame (1 in 3) and breed · forest biomes |
+| Ray | 6 hearts · wheat seeds to tame (1 in 3) and breed · forest biomes |
 | Cash Cat | 10 hearts · cooked salmon to tame (1 in 3) and breed · plains, savanna, taiga |
 | Cheering a Cash Cat | one gold ingot, lasts one Minecraft day (24,000 ticks) |
 | Treasure map | any ingot, 1 in 10,000 |
@@ -105,7 +108,7 @@ verification scripts, and what is involved in adding another pet.
 
 **[GPL-3.0-only](LICENSE)** — inherited, not chosen.
 
-The Robin's model geometry and its bird calls derive from the Blue Jay in
+The Ray's model geometry and its bird calls derive from the Blue Jay in
 **[Alex's Mobs](https://github.com/Alex-the-666/AlexsMobs)** by Alexthe666, which is GPL-3.0. That
 licence is copyleft, so anything built from it carries the same terms, and this mod does too.
 

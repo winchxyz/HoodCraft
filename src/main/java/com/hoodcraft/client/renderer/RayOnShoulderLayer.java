@@ -1,6 +1,6 @@
 package com.hoodcraft.client.renderer;
 
-import com.hoodcraft.client.model.RobinModel;
+import com.hoodcraft.client.model.RayModel;
 import com.hoodcraft.registry.HCEntities;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -15,20 +15,20 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 
 /**
- * Draws a Robin perched on a player's shoulder.
+ * Draws a Ray perched on a player's shoulder.
  *
  * <p>Vanilla's shoulder layer only knows how to draw parrots, so a modded bird riding a shoulder
  * would otherwise be invisible even though the game is tracking it correctly. This layer is added
  * to the player renderers and draws ours the same way.
  */
-public class RobinOnShoulderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
+public class RayOnShoulderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
 
-    private final RobinModel model;
+    private final RayModel model;
 
-    public RobinOnShoulderLayer(RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> parent,
+    public RayOnShoulderLayer(RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> parent,
                                   EntityModelSet models) {
         super(parent);
-        this.model = new RobinModel(models.bakeLayer(RobinModel.LAYER));
+        this.model = new RayModel(models.bakeLayer(RayModel.LAYER));
     }
 
     @Override
@@ -46,12 +46,12 @@ public class RobinOnShoulderLayer extends RenderLayer<AbstractClientPlayer, Play
                                   float netHeadYaw, float headPitch, boolean leftShoulder) {
         CompoundTag tag = leftShoulder ? player.getShoulderEntityLeft() : player.getShoulderEntityRight();
         EntityType.byString(tag.getString("id"))
-                .filter(type -> type == HCEntities.ROBIN.get())
+                .filter(type -> type == HCEntities.RAY.get())
                 .ifPresent(type -> {
                     poseStack.pushPose();
                     poseStack.translate(leftShoulder ? 0.4F : -0.4F, player.isCrouching() ? -1.3F : -1.5F, 0.0F);
                     VertexConsumer consumer =
-                            buffer.getBuffer(this.model.renderType(RobinRenderer.TEXTURE));
+                            buffer.getBuffer(this.model.renderType(RayRenderer.TEXTURE));
                     this.model.renderOnShoulder(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY,
                             limbSwing, limbSwingAmount, netHeadYaw, headPitch, player.tickCount);
                     poseStack.popPose();

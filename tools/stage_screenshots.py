@@ -63,7 +63,7 @@ def prepare(r: Rcon) -> None:
 
 
 def clear_stage(r: Rcon) -> None:
-    r.cmd("kill @e[type=hoodcraft:robin]")
+    r.cmd("kill @e[type=hoodcraft:ray]")
     r.cmd("kill @e[type=item]")
     r.cmd(f"fill {STAGE_X - STAGE_R - 2} {FLOOR_Y - 1} {STAGE_Z - STAGE_R - 2} "
           f"{STAGE_X + STAGE_R + 2} {FLOOR_Y + 16} {STAGE_Z + STAGE_R + 2} minecraft:air")
@@ -89,9 +89,9 @@ def hold(r: Rcon, item: str) -> None:
     r.cmd(f"item replace entity {PLAYER} weapon.mainhand with {item}")
 
 
-def robin(r: Rcon, dx: float, dy: float, dz: float, yaw: float = 180.0,
+def ray(r: Rcon, dx: float, dy: float, dz: float, yaw: float = 180.0,
           flying: bool = False) -> None:
-    """Place a Robin. By default it is left to land on whatever is under it.
+    """Place a Ray. By default it is left to land on whatever is under it.
 
     Gravity matters for how it looks, not just where it ends up: the model reads `onGround()` to
     decide between the perched pose and the flight pose, so a bird pinned in the air with NoGravity
@@ -105,7 +105,7 @@ def robin(r: Rcon, dx: float, dy: float, dz: float, yaw: float = 180.0,
     tags = "NoAI:1b,NoGravity:1b,PersistenceRequired:1b,Silent:1b"
     if not flying:
         tags += ",Sitting:1b"
-    r.cmd(f"summon hoodcraft:robin {STAGE_X + dx} {FLOOR_Y + 1 + dy} {STAGE_Z + dz} "
+    r.cmd(f"summon hoodcraft:ray {STAGE_X + dx} {FLOOR_Y + 1 + dy} {STAGE_Z + dz} "
           '{%s,Rotation:[%.1ff,0f]}' % (tags, yaw))
 
 
@@ -115,7 +115,7 @@ def robin(r: Rcon, dx: float, dy: float, dz: float, yaw: float = 180.0,
 def cash_cat(r: Rcon, dx: float, dz: float, yaw: float = 180.0, cheered: bool = False) -> None:
     """Place a Cash Cat. Cheered ones stand and behave like an ordinary cat.
 
-    Unlike the Robin, no Sitting tag is needed: the model drops into the mascot slouch whenever the
+    Unlike the Ray, no Sitting tag is needed: the model drops into the mascot slouch whenever the
     cat is miserable and not moving, which is exactly the state a frozen NoAI cat is in.
     """
     tags = "NoAI:1b,NoGravity:1b,PersistenceRequired:1b,Silent:1b"
@@ -139,7 +139,7 @@ def scene_cash_cat(r: Rcon) -> None:
 
 
 def scene_hero(r: Rcon) -> None:
-    """Robins on a grassy ledge with open sky behind them."""
+    """Rays on a grassy ledge with open sky behind them."""
     clear_stage(r)
     floor(r, "minecraft:grass_block")
     # A stripped-log perch rather than grass: a green bird on a green field disappears.
@@ -149,22 +149,22 @@ def scene_hero(r: Rcon) -> None:
     # Cut the ground away past the perch so open sky, not more grass, sits behind the birds.
     r.cmd(f"fill {STAGE_X - STAGE_R} {FLOOR_Y} {STAGE_Z + 4} {STAGE_X + STAGE_R} {FLOOR_Y} {STAGE_Z + STAGE_R} minecraft:air")
     hold(r, "minecraft:air")
-    robin(r, -2.5, 1.0, 3.5, 140)
-    robin(r, 0.5, 1.0, 3.5, 175)
-    robin(r, 3.5, 1.0, 3.5, 210)
-    robin(r, -0.6, 3.0, 5.5, 160, flying=True)
+    ray(r, -2.5, 1.0, 3.5, 140)
+    ray(r, 0.5, 1.0, 3.5, 175)
+    ray(r, 3.5, 1.0, 3.5, 210)
+    ray(r, -0.6, 3.0, 5.5, 160, flying=True)
     stand(r, 0.5, -0.4, 0, -3)
 
 
 def scene_portrait(r: Rcon) -> None:
-    """One Robin in side profile at eye level, on dark stone so the green reads."""
+    """One Ray in side profile at eye level, on dark stone so the green reads."""
     clear_stage(r)
     floor(r, "minecraft:polished_deepslate")
     backdrop(r, "minecraft:deepslate_tiles", at_z=5, height=8)
     hold(r, "minecraft:air")
     # A pedestal brings the bird up to roughly eye level (feet + 1.62), turned side-on.
     r.cmd(f"fill {STAGE_X} {FLOOR_Y + 1} {STAGE_Z + 2} {STAGE_X + 1} {FLOOR_Y + 1} {STAGE_Z + 2} minecraft:polished_deepslate")
-    robin(r, 0.5, 1.0, 2.6, 118)
+    ray(r, 0.5, 1.0, 2.6, 118)
     stand(r, 0.5, 0.7, 0, 9)
 
 
@@ -205,9 +205,9 @@ def scene_egg(r: Rcon) -> None:
     for dx, base in ((-2, "minecraft:white_wool"), (0, "minecraft:slime_block"), (2, "minecraft:honey_block")):
         r.cmd(f"setblock {STAGE_X + dx} {FLOOR_Y + 1} {STAGE_Z + 3} {base}")
     for dx, stage in ((-2, 0), (0, 1), (2, 2)):
-        r.cmd(f"setblock {STAGE_X + dx} {FLOOR_Y + 2} {STAGE_Z + 3} hoodcraft:robin_egg[hatch={stage}]")
+        r.cmd(f"setblock {STAGE_X + dx} {FLOOR_Y + 2} {STAGE_Z + 3} hoodcraft:cash_cat_egg[hatch={stage}]")
     hold(r, "minecraft:air")
-    stand(r, 0.0, 0.8, 0, 6)
+    stand(r, 0.0, -1.2, 0, 7)
 
 
 def scene_items(r: Rcon) -> None:
@@ -217,7 +217,7 @@ def scene_items(r: Rcon) -> None:
     backdrop(r, "minecraft:deepslate_tiles", at_z=4, height=6)
     hold(r, "hoodcraft:hood_brush")
     for dx, item in ((-0.8, "hoodcraft:black_feather"), (0.4, "hoodcraft:hood_brush"),
-                     (1.6, "hoodcraft:robin_egg")):
+                     (1.6, "hoodcraft:cash_cat_egg")):
         r.cmd(f"summon item {STAGE_X + dx} {FLOOR_Y + 2.2} {STAGE_Z + 2.2} "
               '{Item:{id:"%s",count:1},Age:-32768,PickupDelay:32767,NoGravity:1b,Motion:[0.0,0.0,0.0]}' % item)
     stand(r, 0.4, 0.9, 0, 3)

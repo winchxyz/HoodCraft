@@ -12,9 +12,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public final class HCBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(HoodCraft.MODID);
 
-    public static final DeferredBlock<HoodEggBlock> ROBIN_EGG = BLOCKS.register("robin_egg",
-            () -> new HoodEggBlock(eggProperties(MapColor.EMERALD), HCEntities.ROBIN));
-
     public static final DeferredBlock<HoodEggBlock> CASH_CAT_EGG = BLOCKS.register("cash_cat_egg",
             () -> new HoodEggBlock(eggProperties(MapColor.TERRACOTTA_WHITE), HCEntities.CASH_CAT));
 

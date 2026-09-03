@@ -137,14 +137,14 @@ exactly — vanilla's own sniffer-egg odds in warm ocean ruins, which is where t
 
 ## Perching
 
-The Robin uses its own `PerchOnOwnerGoal` rather than vanilla's `LandOnOwnersShoulderGoal`, because
+The Ray uses its own `PerchOnOwnerGoal` rather than vanilla's `LandOnOwnersShoulderGoal`, because
 the vanilla one cannot work here. It is entirely passive: it never moves the bird, it only waits for
 its bounding box to happen to intersect the owner's. A parrot lands on you because its wander goal
 eventually flies it into you by chance.
 
 That falls apart with a `TemptGoal` in the mix — `TemptGoal.tick()` halts the mob at 2.5 blocks, and
 `FollowOwnerGoal` stops at 1, where the boxes still do not overlap. Since wheat seeds are the taming
-*and* breeding food, a player who has just tamed a Robin is almost always holding the one item that
+*and* breeding food, a player who has just tamed a Ray is almost always holding the one item that
 guarantees it never touches them.
 
 **This cannot be tested headlessly.** `getOwner()` resolves through `level().getPlayerByUUID()`,
@@ -155,8 +155,8 @@ nor an RCON script can give the bird a real owner. In game:
 /data get entity @s ShoulderEntityLeft
 ```
 
-Naming `hoodcraft:robin` means it mounted and any invisibility is a rendering problem in
-`RobinOnShoulderLayer`. Staying empty means the goal is not firing. The two need completely
+Naming `hoodcraft:ray` means it mounted and any invisibility is a rendering problem in
+`RayOnShoulderLayer`. Staying empty means the goal is not firing. The two need completely
 different fixes, so check which before changing anything.
 
 ## Conflicts

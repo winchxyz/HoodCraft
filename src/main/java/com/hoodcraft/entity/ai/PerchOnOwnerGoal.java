@@ -14,7 +14,7 @@ import java.util.EnumSet;
  * and never moves the bird itself. A parrot only ever lands on you because its wander goal
  * eventually flies it into you by chance.
  *
- * <p>That is too unreliable here, for a reason specific to this mod. Wheat seeds are the Robin's
+ * <p>That is too unreliable here, for a reason specific to this mod. Wheat seeds are the Ray's
  * taming <em>and</em> breeding food, so a player who has just tamed one is almost certainly still
  * holding seeds - and {@code TemptGoal} halts the bird at 2.5 blocks while they do. Passive landing
  * needs contact, so under the most natural way to play, it could never happen at all.

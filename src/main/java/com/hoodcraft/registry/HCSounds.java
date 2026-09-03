@@ -15,10 +15,10 @@ public final class HCSounds {
     public static final DeferredRegister<SoundEvent> SOUNDS =
             DeferredRegister.create(Registries.SOUND_EVENT, HoodCraft.MODID);
 
-    public static final DeferredHolder<SoundEvent, SoundEvent> ROBIN_IDLE = register("entity.robin.ambient");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ROBIN_HURT = register("entity.robin.hurt");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ROBIN_DEATH = register("entity.robin.death");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ROBIN_SONG = register("entity.robin.song");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAY_IDLE = register("entity.ray.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAY_HURT = register("entity.ray.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAY_DEATH = register("entity.ray.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAY_SONG = register("entity.ray.song");
 
     /** Aliases onto vanilla's cat sounds - see sounds.json; no audio is shipped for these. */
     public static final DeferredHolder<SoundEvent, SoundEvent> CASH_CAT_SAD = register("entity.cash_cat.sad");

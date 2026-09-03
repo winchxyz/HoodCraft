@@ -183,7 +183,7 @@ public class CashCat extends TamableAnimal {
         }
 
         // Tears, client side only. A cheered cat has nothing to cry about.
-        if (!this.isCheeredUp() && this.random.nextInt(12) == 0) {
+        if (!this.isCheeredUp() && this.random.nextInt(TEAR_CHANCE) == 0) {
             this.spawnTear();
         }
     }
@@ -199,6 +199,9 @@ public class CashCat extends TamableAnimal {
     private static final double SITTING_EYE_HEIGHT = 0.85D;
     private static final double TEAR_FORWARD = 0.30D;
 
+    /** Roughly three tears a second, often enough to read as crying rather than as a stray drip. */
+    private static final int TEAR_CHANCE = 6;
+
     private void spawnTear() {
         // Just in front of the face, offset to one side so it reads as an eye rather than the nose.
         float side = this.random.nextBoolean() ? 0.11F : -0.11F;
@@ -206,7 +209,11 @@ public class CashCat extends TamableAnimal {
         double x = this.getX() - Math.sin(yaw) * TEAR_FORWARD + Math.cos(yaw) * side;
         double z = this.getZ() + Math.cos(yaw) * TEAR_FORWARD + Math.sin(yaw) * side;
         double y = this.getY() + SITTING_EYE_HEIGHT;
-        this.level().addParticle(ParticleTypes.DRIPPING_WATER, x, y, z, 0.0D, 0.0D, 0.0D);
+        // FALLING_WATER, not DRIPPING_WATER. The latter builds a DripHangParticle, which is meant
+        // to cling under a block: it hangs in place wobbling and only drops once its hang timer runs
+        // out, so at a cat's face it reads as a stationary speck and disappears entirely against a
+        // bright shader-lit scene. FALLING_WATER falls straight away and lands with a splash.
+        this.level().addParticle(ParticleTypes.FALLING_WATER, x, y, z, 0.0D, 0.0D, 0.0D);
     }
 
     // ------------------------------------------------------- taming, feeding

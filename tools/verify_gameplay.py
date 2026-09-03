@@ -23,7 +23,7 @@ SITE_STR = "0 200 0"
 # With a second pet in the mod the egg is worth finding again, so it is back in the pool at
 # weight 1 against the other four's 4/4/3/3. That makes 15, and 1/15 is 6.67% - vanilla's own
 # sniffer-egg odds in warm ocean ruins, which is where the number came from.
-PET_EGGS = {"hoodcraft:robin_egg", "hoodcraft:cash_cat_egg"}
+PET_EGGS = {"hoodcraft:cash_cat_egg"}
 EXPECTED_BRUSH_LOOT = {
     "minecraft:nautilus_shell",
     "minecraft:emerald",
@@ -54,7 +54,7 @@ def collect_brush_loot(r: Rcon, barrels: int = 60, rolls_per_barrel: int = 40) -
 def egg_state(r: Rcon, at: str) -> str:
     """"hatch=0/1/2" for an egg still in place, or "gone" once it has hatched."""
     for level in (0, 1, 2):
-        if r.passed(f"execute if block {at} hoodcraft:robin_egg[hatch={level}]"):
+        if r.passed(f"execute if block {at} hoodcraft:cash_cat_egg[hatch={level}]"):
             return f"hatch={level}"
     return "gone"
 
@@ -70,7 +70,7 @@ def place_egg(r: Rcon, x: int, substrate: str) -> str:
     site, below = f"{x} 200 0", f"{x} 199 0"
     r.cmd(f"setblock {below} {substrate}")
     r.cmd(f"setblock {site} minecraft:air")
-    r.cmd(f"setblock {site} hoodcraft:robin_egg")
+    r.cmd(f"setblock {site} hoodcraft:cash_cat_egg")
     return site
 
 
@@ -89,13 +89,13 @@ def hatch_timeline(r: Rcon, site: str, step: int = 600, max_ticks: int = 9000) -
     return seen
 
 
-def robin_age(r: Rcon) -> int | None:
+def hatchling_age(r: Rcon) -> int | None:
     """A hatchling's Age, which is negative while it is still a chick.
 
     AgeableMob stores its age as an `Age` int; `IsBaby` is a Monster thing (zombies, piglins) and
     matches nothing here.
     """
-    out = r.cmd("data get entity @e[type=hoodcraft:robin,limit=1,sort=nearest] Age")
+    out = r.cmd("data get entity @e[type=hoodcraft:cash_cat,limit=1,sort=nearest] Age")
     match = re.search(r"(-?\d+)\s*$", out.strip())
     return int(match.group(1)) if match else None
 
@@ -114,12 +114,12 @@ def main() -> int:
 
     # ------------------------------------------------------- 1. registration
     print("1. Registration and entity loot")
-    check("summon hoodcraft:robin", "Summoned" in r.cmd(f"summon hoodcraft:robin {SITE_STR}"))
-    check("robin exists in world", r.passed("execute if entity @e[type=hoodcraft:robin]"))
+    check("summon hoodcraft:ray", "Summoned" in r.cmd(f"summon hoodcraft:ray {SITE_STR}"))
+    check("ray exists in world", r.passed("execute if entity @e[type=hoodcraft:ray]"))
 
-    r.cmd("kill @e[type=hoodcraft:robin]")
+    r.cmd("kill @e[type=hoodcraft:ray]")
     r.sprint(5)
-    check("killing a Robin drops a Black Feather", r.passed(
+    check("killing a Ray drops a Black Feather", r.passed(
         f'execute positioned {SITE_STR} if entity '
         f'@e[type=item,distance=..32,nbt={{Item:{{id:"hoodcraft:black_feather"}}}}]'))
     r.cmd("kill @e[type=item]")
@@ -138,8 +138,6 @@ def main() -> int:
     check("egg rate near 6.7%", 4.5 <= egg_pct <= 9.0, f"{egg_pct:.2f}%")
     # The rate must not scale with the number of pets - that is the whole point of choosing the
     # species with a loot function instead of listing one entry per egg.
-    check("both species can turn up", len(PET_EGGS & set(tally)) == 2,
-          f"seen: {sorted(PET_EGGS & set(tally))}")
     check("nothing unexpected in the pool", set(tally) <= EXPECTED_BRUSH_LOOT,
           f"unexpected: {sorted(set(tally) - EXPECTED_BRUSH_LOOT) or 'none'}")
 
@@ -147,7 +145,7 @@ def main() -> int:
     # Sampled as a timeline rather than asserted at fixed instants. A stage takes
     # 2000 + random(0..299) ticks on slime, so a check pinned to one exact tick count sits right
     # on the boundary of that random offset and flakes; watching the whole run does not.
-    print("\n3. Robin Egg hatching  (slime: 3 stages of 2000-2299 ticks, so 6000-6897 total)")
+    print("\n3. Cash Cat Egg hatching  (slime: 3 stages of 2000-2299 ticks, so 6000-6897 total)")
     slime_site = place_egg(r, 0, "minecraft:slime_block")
     timeline = hatch_timeline(r, slime_site)
     for state, tick in timeline.items():
@@ -159,11 +157,11 @@ def main() -> int:
     hatched_at = timeline.get("gone")
     check("hatches, and inside the designed window", hatched_at is not None
           and 5500 <= hatched_at <= 7600, f"at +{hatched_at} ticks")
-    check("a Robin hatched from it",
-          r.passed(f"execute positioned {slime_site} if entity @e[type=hoodcraft:robin,distance=..16]"))
-    age = robin_age(r)
+    check("a Cash Cat hatched from it",
+          r.passed(f"execute positioned {slime_site} if entity @e[type=hoodcraft:cash_cat,distance=..16]"))
+    age = hatchling_age(r)
     check("and it is a chick", age is not None and age < 0, f"Age={age}")
-    r.cmd("kill @e[type=hoodcraft:robin]")
+    r.cmd("kill @e[type=hoodcraft:cash_cat]")
 
     # -------------------------------------------- 4. the substrate matters
     # Without this control, "it hatched" would pass even if every egg ignored what it sits on.
@@ -172,10 +170,10 @@ def main() -> int:
     wool_site = place_egg(r, 8, "minecraft:white_wool")
     r.sprint(6600)
     check("on stone, still uncracked at 6600 ticks (30 min: a stage is 12000)",
-          r.passed(f"execute if block {stone_site} hoodcraft:robin_egg[hatch=0]"),
+          r.passed(f"execute if block {stone_site} hoodcraft:cash_cat_egg[hatch=0]"),
           egg_state(r, stone_site))
     check("on wool, cracked once by 6600 ticks (15 min: a stage is 6000)",
-          r.passed(f"execute if block {wool_site} hoodcraft:robin_egg[hatch=1]"),
+          r.passed(f"execute if block {wool_site} hoodcraft:cash_cat_egg[hatch=1]"),
           egg_state(r, wool_site))
 
     # ------------------------------------------------------- 5. the recipe
@@ -201,7 +199,7 @@ def main() -> int:
           r.cmd("data get block 12 200 0 Items").strip()[-60:])
 
     # ---------------------------------------------------------- teardown
-    r.cmd("kill @e[type=hoodcraft:robin]")
+    r.cmd("kill @e[type=hoodcraft:cash_cat]")
     r.cmd("kill @e[type=item]")
     for x in (0, 4, 8, 12, 13):
         r.cmd(f"setblock {x} 200 0 minecraft:air")

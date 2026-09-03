@@ -44,13 +44,13 @@ import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * The Robin - the Robinhood-green bird, and the first HoodCraft pet.
+ * The Ray - the Robinhood-green bird, and the first HoodCraft pet.
  *
  * <p>Behaviour is the vanilla parrot's: it flies, it lands on its owner's shoulder, it sits when
  * told to and it takes no fall damage. It differs in two ways. It is tamed with wheat seeds rather
  * than cookies, and - unlike a parrot - a tamed pair can be bred, again with wheat seeds.
  */
-public class Robin extends ShoulderRidingEntity implements FlyingAnimal {
+public class Ray extends ShoulderRidingEntity implements FlyingAnimal {
 
     /** Wheat seeds do all three jobs: tempting, taming and breeding. */
     private static final Ingredient FOOD = Ingredient.of(Items.WHEAT_SEEDS);
@@ -69,7 +69,7 @@ public class Robin extends ShoulderRidingEntity implements FlyingAnimal {
     private float flapping = 1.0F;
     private float nextFlap = 1.0F;
 
-    public Robin(EntityType<? extends Robin> type, Level level) {
+    public Ray(EntityType<? extends Ray> type, Level level) {
         super(type, level);
         this.moveControl = new FlyingMoveControl(this, 10, false);
         this.setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
@@ -91,7 +91,7 @@ public class Robin extends ShoulderRidingEntity implements FlyingAnimal {
      * it would otherwise keep the bird permanently out of arm's reach: {@code TemptGoal} halts at
      * 2.5 blocks and {@code FollowOwnerGoal} at 1, and a shoulder landing needs actual contact.
      * Since wheat seeds do the taming, the tempting and the breeding here, a player who has just
-     * tamed a Robin is usually still holding the one item that would stop it landing on them.
+     * tamed a Ray is usually still holding the one item that would stop it landing on them.
      */
     @Override
     protected void registerGoals() {
@@ -222,7 +222,7 @@ public class Robin extends ShoulderRidingEntity implements FlyingAnimal {
     @Override
     @Nullable
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
-        Robin chick = HCEntities.ROBIN.get().create(level);
+        Ray chick = HCEntities.RAY.get().create(level);
         if (chick != null && this.getOwnerUUID() != null) {
             // A chick is born already belonging to whoever owns its parent.
             chick.setOwnerUUID(this.getOwnerUUID());
@@ -233,7 +233,7 @@ public class Robin extends ShoulderRidingEntity implements FlyingAnimal {
 
     @Override
     public boolean canMate(Animal other) {
-        if (other == this || !this.isTame() || !(other instanceof Robin mate) || !mate.isTame()) {
+        if (other == this || !this.isTame() || !(other instanceof Ray mate) || !mate.isTame()) {
             return false;
         }
         return this.isInLove() && mate.isInLove();
@@ -266,17 +266,17 @@ public class Robin extends ShoulderRidingEntity implements FlyingAnimal {
     @Nullable
     protected SoundEvent getAmbientSound() {
         // Occasionally the fuller song rather than the short chirp.
-        return this.random.nextInt(12) == 0 ? HCSounds.ROBIN_SONG.get() : HCSounds.ROBIN_IDLE.get();
+        return this.random.nextInt(12) == 0 ? HCSounds.RAY_SONG.get() : HCSounds.RAY_IDLE.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return HCSounds.ROBIN_HURT.get();
+        return HCSounds.RAY_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return HCSounds.ROBIN_DEATH.get();
+        return HCSounds.RAY_DEATH.get();
     }
 
     @Override

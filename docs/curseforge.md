@@ -38,7 +38,7 @@ HoodCraft adds a small, self-contained progression that hangs off Minecraft's ow
 It starts with a bird and a feather, and ends with you brushing dust off things nobody has touched
 in a very long time.
 
-**The Robin**
+**The Ray**
 
 A Robinhood-green bird that behaves the way a parrot does — it flies, it perches on your shoulder,
 it sits when you tell it to, and it never takes fall damage. Two things set it apart. You tame it
@@ -47,7 +47,7 @@ them in forest biomes.
 
 **The Black Feather**
 
-What a Robin drops. It is the only feather the Hood Brush can be built from.
+What a Ray drops. It is the only feather the Hood Brush can be built from.
 
 **The Hood Brush**
 
@@ -74,12 +74,12 @@ pet worth finding.
 
 **Requirements**
 
-Minecraft 1.21.1 and NeoForge 21.1.x. Nothing else — the Robin's model was rebuilt against vanilla,
+Minecraft 1.21.1 and NeoForge 21.1.x. Nothing else — the Ray's model was rebuilt against vanilla,
 so there is no dependency on Citadel despite the geometry originating in a mod that needs it.
 
 **Credits**
 
-The Robin's model geometry and bird calls derive from the Blue Jay in
+The Ray's model geometry and bird calls derive from the Blue Jay in
 [Alex's Mobs](https://www.curseforge.com/minecraft/mc-mods/alexs-mobs) by Alexthe666, used under
 GPL-3.0.
 
@@ -91,13 +91,13 @@ Upload from `docs/screenshots/`. All are 1600×900, comfortably over CurseForge'
 
 | File | Use | Caption |
 | --- | --- | --- |
-| `hero.png` | **Main image / thumbnail** | Robins perched on a log |
-| `portrait.png` | Gallery | The Robin, tamed with wheat seeds |
+| `hero.png` | **Main image / thumbnail** | Rays perched on a log |
+| `portrait.png` | Gallery | The Ray, tamed with wheat seeds |
 | `brush.png` | Gallery | The Hood Brush over suspicious sand and gravel |
-| `items.png` | Gallery | Black Feather, Hood Brush, Robin Egg |
+| `items.png` | Gallery | Black Feather, Hood Brush, Ray Egg |
 | `egg.png` | Gallery *(optional)* | Hatch stages on wool, slime and honey — WIP |
 
-For the project avatar use `docs/branding/robin-avatar.jpg` (1408×1408). The same art, resized to
+For the project avatar use `docs/branding/ray-avatar.jpg` (1408×1408). The same art, resized to
 256×256, is `src/main/resources/hoodcraft.png` — the logo NeoForge shows in the in-game mod list.
 
 `docs/branding/banner.jpg` (2448×816) is the wordmark banner. CurseForge has no banner slot of its
@@ -121,7 +121,7 @@ forum post.
 
 > First release.
 >
-> - The Robin: a tameable, breedable, shoulder-perching bird. Wheat seeds tame and breed it.
+> - The Ray: a tameable, breedable, shoulder-perching bird. Wheat seeds tame and breed it.
 > - Black Feather drop, and the Hood Brush crafted from it.
 > - Hood Brush uncovers a nautilus shell, an emerald, leather boots or a stone hoe.
 > - Suspicious gravel now generates in ancient cities.
@@ -143,7 +143,7 @@ first submission gets reviewed with a human behind it.
 
 ## A note on the licence
 
-GPL-3.0 is inherited, not chosen: the Robin's geometry and sounds come from Alex's Mobs, which is
+GPL-3.0 is inherited, not chosen: the Ray's geometry and sounds come from Alex's Mobs, which is
 GPL-3.0 and copyleft. It has two practical consequences worth knowing before you publish:
 
 - **The licence field on CurseForge must say GPL-3.0.** Picking "All Rights Reserved" would be a

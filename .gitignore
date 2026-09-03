@@ -41,7 +41,7 @@ textures/BlockSprite_*.png
 textures/Invicon_Sniffer_Egg.webp
 textures/*.zip
 # Alex's Mobs' unused "shiny" variant, kept only for reference.
-textures/robin_bird_shiny.png
+textures/ray_bird_shiny.png
 
 # JVM crash dumps
 hs_err_pid*.log

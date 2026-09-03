@@ -34,7 +34,6 @@ DRAWING = ROOT / "textures"
 # Only the uncracked stage is ever drawn by hand. The two cracked stages are always generated from
 # it, so the damage accumulates consistently and a redrawn egg does not mean redrawing three files.
 EGGS: list[tuple[str, tuple[int, int, int], str | None]] = [
-    ("robin_egg", (0x00, 0xC8, 0x05), None),
     ("cash_cat_egg", (0x8A, 0x6A, 0x4F), "cashcat/cashcat_egg_block.png"),
 ]
 
