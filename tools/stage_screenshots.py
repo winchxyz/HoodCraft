@@ -63,7 +63,9 @@ def prepare(r: Rcon) -> None:
 
 
 def clear_stage(r: Rcon) -> None:
+    # Every mob the mod adds, or leftovers accumulate from scene to scene.
     r.cmd("kill @e[type=hoodcraft:ray]")
+    r.cmd("kill @e[type=hoodcraft:cash_cat]")
     r.cmd("kill @e[type=item]")
     r.cmd(f"fill {STAGE_X - STAGE_R - 2} {FLOOR_Y - 1} {STAGE_Z - STAGE_R - 2} "
           f"{STAGE_X + STAGE_R + 2} {FLOOR_Y + 16} {STAGE_Z + STAGE_R + 2} minecraft:air")
