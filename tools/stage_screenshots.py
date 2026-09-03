@@ -133,9 +133,10 @@ def scene_cash_cat(r: Rcon) -> None:
     hold(r, "minecraft:air")
     r.cmd(f"setblock {STAGE_X - 4} {FLOOR_Y + 3} {STAGE_Z + 5} minecraft:soul_lantern")
     r.cmd(f"setblock {STAGE_X + 4} {FLOOR_Y + 3} {STAGE_Z + 5} minecraft:soul_lantern")
-    cash_cat(r, -0.75, 2.0, 160)
-    cash_cat(r, 0.85, 2.2, 200, cheered=True)
-    stand(r, 0.0, 0.0, 0, 22)
+    # Three-quarter view of the sitting cat, with a cheered one behind it for contrast.
+    cash_cat(r, 0.1, 2.1, 145)
+    cash_cat(r, -1.9, 3.4, 205, cheered=True)
+    stand(r, 0.0, 0.0, 0, 18)
 
 
 def scene_hero(r: Rcon) -> None:

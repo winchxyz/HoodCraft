@@ -51,8 +51,18 @@ public class CashCatModel extends AgeableListModel<CashCat> {
     private static final float SAD_FRONT_LEG_Y = 14.1F;
     private static final float SAD_FRONT_LEG_Z = -6.0F;
     private static final float SAD_FRONT_LEG_X = 1.0F;
-    private static final float SAD_HIND_LEG_Y = 21.0F;
-    private static final float SAD_HIND_LEG_Z = 1.0F;
+    // Hind legs turn out to the sides, the way a real cat's do when it sits, so the haunches read
+    // from the side instead of vanishing under the belly.
+    //
+    // The splay is zRot, not yRot. Rotating a downward leg about Y only spins it about its own
+    // length and changes nothing; combined with a 90-degree xRot fold it swings the leg up flat
+    // against the underside of the body. zRot is the one that tips it outward while it still points
+    // downward, so xRot is kept to a partial fold rather than the full right angle vanilla uses.
+    private static final float SAD_HIND_LEG_X = 1.5F;
+    private static final float SAD_HIND_LEG_Y = 19.2F;
+    private static final float SAD_HIND_LEG_Z = 3.0F;
+    private static final float SAD_HIND_LEG_FOLD = -0.55F;
+    private static final float SAD_HIND_LEG_SPLAY = 0.70F;
     /** Ears folded back and splayed outward - the single clearest misery tell. */
     private static final float SAD_EAR_X_ROT = 0.85F;
     private static final float SAD_EAR_Z_ROT = 0.42F;
@@ -68,7 +78,7 @@ public class CashCatModel extends AgeableListModel<CashCat> {
     private final ModelPart leftEar;
     private final ModelPart rightEar;
 
-    private boolean sitting;
+    private float sitAmount;
 
     public CashCatModel(ModelPart root) {
         super(true, 10.0F, 4.0F);
@@ -144,14 +154,12 @@ public class CashCatModel extends AgeableListModel<CashCat> {
         super.prepareMobModel(cat, limbSwing, limbSwingAmount, partialTick);
         this.resetPose();
 
-        // It sits while it is miserable and not going anywhere, and whenever it has been told to.
-        // Checking the limb swing rather than the mood alone means a sad cat that does move - to
-        // breed, or to flee - walks properly instead of skating along in a seated pose.
-        boolean stationary = limbSwingAmount < 0.05F;
-        this.sitting = cat.isOrderedToSit() || (!cat.isCheeredUp() && stationary);
-
-        if (this.sitting) {
-            this.applySadSit();
+        // Driven by the entity, not by the limb swing here: it applies hysteresis so the cat does
+        // not bob up and down every time something jostles it, and interpolates so the change reads
+        // as sitting down rather than snapping between two poses.
+        this.sitAmount = cat.getSitAmount(partialTick);
+        if (this.sitAmount > 0.0F) {
+            this.applySadSit(this.sitAmount);
         }
     }
 
@@ -172,41 +180,63 @@ public class CashCatModel extends AgeableListModel<CashCat> {
         this.rightFrontLeg.xRot = 0.0F;
         this.leftHindLeg.xRot = 0.0F;
         this.rightHindLeg.xRot = 0.0F;
+        this.leftHindLeg.zRot = 0.0F;
+        this.rightHindLeg.zRot = 0.0F;
         this.leftEar.xRot = 0.0F;
         this.leftEar.zRot = 0.0F;
         this.rightEar.xRot = 0.0F;
         this.rightEar.zRot = 0.0F;
     }
 
-    private void applySadSit() {
-        this.body.xRot = SAD_BODY_X_ROT;
-        this.body.y += SAD_BODY_Y;
-        this.body.z += SAD_BODY_Z;
+    private static float lerp(float t, float from, float to) {
+        return from + (to - from) * t;
+    }
 
-        this.head.y += SAD_HEAD_Y;
-        this.head.z += SAD_HEAD_Z;
+    /**
+     * Blend the standing skeleton toward the mascot sit.
+     *
+     * <p>Every value starts from whatever {@link #resetPose()} left behind, so at t=0 this is a
+     * no-op and at t=1 it is the full pose; anything between is a real halfway crouch rather than
+     * one pose or the other.
+     */
+    private void applySadSit(float t) {
+        this.body.xRot = lerp(t, this.body.xRot, SAD_BODY_X_ROT);
+        this.body.y = lerp(t, this.body.y, 12.0F + SAD_BODY_Y);
+        this.body.z = lerp(t, this.body.z, -10.0F + SAD_BODY_Z);
 
-        this.tail1.y += 8.0F;
-        this.tail1.z += -2.0F;
-        this.tail1.xRot = 1.7278761F;
-        this.tail2.y += 2.0F;
-        this.tail2.z += -0.8F;
-        this.tail2.xRot = 2.670354F;
+        this.head.y = lerp(t, this.head.y, 15.0F + SAD_HEAD_Y);
+        this.head.z = lerp(t, this.head.z, -9.0F + SAD_HEAD_Z);
 
-        this.leftFrontLeg.setPos(SAD_FRONT_LEG_X, SAD_FRONT_LEG_Y, SAD_FRONT_LEG_Z);
-        this.rightFrontLeg.setPos(-SAD_FRONT_LEG_X, SAD_FRONT_LEG_Y, SAD_FRONT_LEG_Z);
-        this.leftFrontLeg.xRot = 0.0F;
-        this.rightFrontLeg.xRot = 0.0F;
+        this.tail1.y = lerp(t, this.tail1.y, 15.0F + 8.0F);
+        this.tail1.z = lerp(t, this.tail1.z, 8.0F - 2.0F);
+        this.tail1.xRot = lerp(t, this.tail1.xRot, 1.7278761F);
+        this.tail2.y = lerp(t, this.tail2.y, 20.0F + 2.0F);
+        this.tail2.z = lerp(t, this.tail2.z, 14.0F - 0.8F);
+        this.tail2.xRot = lerp(t, this.tail2.xRot, 2.670354F);
 
-        this.leftHindLeg.setPos(1.1F, SAD_HIND_LEG_Y, SAD_HIND_LEG_Z);
-        this.rightHindLeg.setPos(-1.1F, SAD_HIND_LEG_Y, SAD_HIND_LEG_Z);
-        this.leftHindLeg.xRot = (float) (-Math.PI / 2);
-        this.rightHindLeg.xRot = (float) (-Math.PI / 2);
+        this.leftFrontLeg.x = lerp(t, this.leftFrontLeg.x, SAD_FRONT_LEG_X);
+        this.leftFrontLeg.y = lerp(t, this.leftFrontLeg.y, SAD_FRONT_LEG_Y);
+        this.leftFrontLeg.z = lerp(t, this.leftFrontLeg.z, SAD_FRONT_LEG_Z);
+        this.rightFrontLeg.x = lerp(t, this.rightFrontLeg.x, -SAD_FRONT_LEG_X);
+        this.rightFrontLeg.y = lerp(t, this.rightFrontLeg.y, SAD_FRONT_LEG_Y);
+        this.rightFrontLeg.z = lerp(t, this.rightFrontLeg.z, SAD_FRONT_LEG_Z);
 
-        this.leftEar.xRot = SAD_EAR_X_ROT;
-        this.leftEar.zRot = -SAD_EAR_Z_ROT;
-        this.rightEar.xRot = SAD_EAR_X_ROT;
-        this.rightEar.zRot = SAD_EAR_Z_ROT;
+        this.leftHindLeg.x = lerp(t, this.leftHindLeg.x, SAD_HIND_LEG_X);
+        this.leftHindLeg.y = lerp(t, this.leftHindLeg.y, SAD_HIND_LEG_Y);
+        this.leftHindLeg.z = lerp(t, this.leftHindLeg.z, SAD_HIND_LEG_Z);
+        this.leftHindLeg.xRot = lerp(t, this.leftHindLeg.xRot, SAD_HIND_LEG_FOLD);
+        this.leftHindLeg.zRot = lerp(t, this.leftHindLeg.zRot, -SAD_HIND_LEG_SPLAY);
+
+        this.rightHindLeg.x = lerp(t, this.rightHindLeg.x, -SAD_HIND_LEG_X);
+        this.rightHindLeg.y = lerp(t, this.rightHindLeg.y, SAD_HIND_LEG_Y);
+        this.rightHindLeg.z = lerp(t, this.rightHindLeg.z, SAD_HIND_LEG_Z);
+        this.rightHindLeg.xRot = lerp(t, this.rightHindLeg.xRot, SAD_HIND_LEG_FOLD);
+        this.rightHindLeg.zRot = lerp(t, this.rightHindLeg.zRot, SAD_HIND_LEG_SPLAY);
+
+        this.leftEar.xRot = lerp(t, this.leftEar.xRot, SAD_EAR_X_ROT);
+        this.leftEar.zRot = lerp(t, this.leftEar.zRot, -SAD_EAR_Z_ROT);
+        this.rightEar.xRot = lerp(t, this.rightEar.xRot, SAD_EAR_X_ROT);
+        this.rightEar.zRot = lerp(t, this.rightEar.zRot, SAD_EAR_Z_ROT);
     }
 
     @Override
@@ -215,24 +245,33 @@ public class CashCatModel extends AgeableListModel<CashCat> {
         this.head.xRot += headPitch * ((float) Math.PI / 180F);
         this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
 
-        if (this.sitting) {
+        float standing = 1.0F - this.sitAmount;
+
+        if (this.sitAmount > 0.0F) {
             // Chin down, and a slow breathing sway so a stationary cat is not a statue.
-            this.head.xRot += SAD_HEAD_X_ROT;
-            this.head.y += Mth.cos(ageInTicks * 0.09F) * 0.12F;
-            this.tail2.xRot += Mth.cos(ageInTicks * 0.06F) * 0.06F;
+            this.head.xRot += SAD_HEAD_X_ROT * this.sitAmount;
+            this.head.y += Mth.cos(ageInTicks * 0.09F) * 0.12F * this.sitAmount;
+            this.tail2.xRot += Mth.cos(ageInTicks * 0.06F) * 0.06F * this.sitAmount;
+        }
+
+        if (standing <= 0.0F) {
             return;
         }
 
-        this.leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * limbSwingAmount;
-        this.rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * limbSwingAmount;
-        this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * limbSwingAmount;
-        this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * limbSwingAmount;
-        this.tail2.xRot = 1.7278761F + ((float) Math.PI / 4F) * Mth.cos(limbSwing) * limbSwingAmount;
+        // Scaled by how far out of the sit it is, so a cat rising mid-stride does not suddenly
+        // start swinging legs that are still folded underneath it.
+        float swing = limbSwingAmount * standing;
+        this.leftHindLeg.xRot += Mth.cos(limbSwing * 0.6662F) * swing;
+        this.rightHindLeg.xRot += Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * swing;
+        this.leftFrontLeg.xRot += Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * swing;
+        this.rightFrontLeg.xRot += Mth.cos(limbSwing * 0.6662F) * swing;
+        this.tail2.xRot += (1.7278761F + ((float) Math.PI / 4F) * Mth.cos(limbSwing) * limbSwingAmount
+                - this.tail2.xRot) * standing;
 
         // Gold has worn off but it is still walking: ears stay a little down.
         if (!cat.isCheeredUp()) {
-            this.leftEar.xRot = SAD_EAR_X_ROT * 0.45F;
-            this.rightEar.xRot = SAD_EAR_X_ROT * 0.45F;
+            this.leftEar.xRot = lerp(standing, this.leftEar.xRot, SAD_EAR_X_ROT * 0.45F);
+            this.rightEar.xRot = lerp(standing, this.rightEar.xRot, SAD_EAR_X_ROT * 0.45F);
         }
     }
 }

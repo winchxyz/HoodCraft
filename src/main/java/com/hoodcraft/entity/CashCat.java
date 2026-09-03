@@ -12,6 +12,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.tags.StructureTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -125,6 +126,48 @@ public class CashCat extends TamableAnimal {
 
     private void setCheerTicks(int ticks) {
         this.entityData.set(DATA_CHEER_TICKS, Math.max(0, ticks));
+    }
+
+    // --- sitting down, and getting back up ---------------------------------
+    //
+    // The pose is driven from here rather than straight off the model's limb swing. Limb swing
+    // twitches whenever the cat is nudged, pushed, or takes a single corrective step, and a raw
+    // threshold on it makes the cat stand and drop back down every time it flickers across the
+    // line. Two things fix that: hysteresis, so settling and rising need different amounts of
+    // movement, and an interpolated amount, so the change is a movement rather than a snap.
+
+    /** How much of the sit is added or removed per tick - about a third of a second either way. */
+    private static final float SIT_RATE = 0.15F;
+    /** Nearly motionless before it will settle. */
+    private static final float ENTER_SIT_SPEED = 0.03F;
+    /** Properly walking before it will rise. */
+    private static final float LEAVE_SIT_SPEED = 0.20F;
+
+    private float sitAmount;
+    private float sitAmountPrev;
+
+    /** 0 while standing, 1 while fully sat in the mascot pose. */
+    public float getSitAmount(float partialTick) {
+        return Mth.lerp(partialTick, this.sitAmountPrev, this.sitAmount);
+    }
+
+    private boolean wantsToSit() {
+        if (this.isOrderedToSit()) {
+            return true;
+        }
+        if (this.isCheeredUp()) {
+            return false;
+        }
+        float threshold = this.sitAmount > 0.5F ? LEAVE_SIT_SPEED : ENTER_SIT_SPEED;
+        return this.walkAnimation.speed() < threshold;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        this.sitAmountPrev = this.sitAmount;
+        this.sitAmount = Mth.clamp(this.sitAmount + (this.wantsToSit() ? SIT_RATE : -SIT_RATE),
+                0.0F, 1.0F);
     }
 
     @Override
