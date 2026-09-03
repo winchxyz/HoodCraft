@@ -51,6 +51,12 @@ Feather comes from, so an egg for it would just be a circular reward; the Cash C
 **Suspicious gravel in ancient cities** — 30% of the loose cobbled deepslate on their floors, so the
 brush has somewhere new to be used. Vanilla's suspicious sand still works as it always did.
 
+## Showcase
+
+[**Watch the 40-second showcase**](docs/showcase.mp4) — Rays on a perch, the Cash Cat crying and
+then cheered up with a gold ingot, the Hood Brush at work, and an egg hatching. Recorded in game
+with Complementary shaders.
+
 ## Screenshots
 
 ![Three Rays perched on a log against a clear sky, with a fourth in flight](docs/screenshots/hero.png)
