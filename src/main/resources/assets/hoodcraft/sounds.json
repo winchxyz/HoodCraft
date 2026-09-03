@@ -27,5 +27,59 @@
       "hoodcraft:robin_song_1",
       "hoodcraft:robin_song_2"
     ]
+  },
+  "entity.cash_cat.sad": {
+    "subtitle": "subtitles.entity.cash_cat.sad",
+    "sounds": [
+      {
+        "name": "minecraft:entity.cat.stray_ambient",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.cash_cat.purr": {
+    "subtitle": "subtitles.entity.cash_cat.purr",
+    "sounds": [
+      {
+        "name": "minecraft:entity.cat.purr",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.cash_cat.hurt": {
+    "subtitle": "subtitles.entity.cash_cat.hurt",
+    "sounds": [
+      {
+        "name": "minecraft:entity.cat.hurt",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.cash_cat.death": {
+    "subtitle": "subtitles.entity.cash_cat.death",
+    "sounds": [
+      {
+        "name": "minecraft:entity.cat.death",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.cash_cat.cheer": {
+    "subtitle": "subtitles.entity.cash_cat.cheer",
+    "sounds": [
+      {
+        "name": "minecraft:entity.cat.purreow",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.cash_cat.jackpot": {
+    "subtitle": "subtitles.entity.cash_cat.jackpot",
+    "sounds": [
+      {
+        "name": "minecraft:entity.player.levelup",
+        "type": "event"
+      }
+    ]
   }
 }

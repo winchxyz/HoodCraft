@@ -27,9 +27,15 @@ BLOCKS = ROOT / "src" / "main" / "resources" / "assets" / "hoodcraft" / "texture
 
 SIZE = 16
 
-# name prefix -> base colour. Robinhood green for the Robin.
-EGGS: list[tuple[str, tuple[int, int, int]]] = [
-    ("robin_egg", (0x00, 0xC8, 0x05)),
+DRAWING = ROOT / "textures"
+
+# name prefix -> (base colour, optional hand-drawn 16x16 source relative to textures/).
+#
+# Only the uncracked stage is ever drawn by hand. The two cracked stages are always generated from
+# it, so the damage accumulates consistently and a redrawn egg does not mean redrawing three files.
+EGGS: list[tuple[str, tuple[int, int, int], str | None]] = [
+    ("robin_egg", (0x00, 0xC8, 0x05), None),
+    ("cash_cat_egg", (0x8A, 0x6A, 0x4F), "cashcat/cashcat_egg_block.png"),
 ]
 
 # Crack pixels, as (x, y) runs. The "slightly cracked" stage uses the first list only; the
@@ -89,8 +95,18 @@ def main() -> int:
     BLOCKS.mkdir(parents=True, exist_ok=True)
     written = []
 
-    for name, colour in EGGS:
-        uncracked = base_egg(colour)
+    for name, colour, source in EGGS:
+        if source is not None:
+            drawn = DRAWING / source
+            if not drawn.exists():
+                print(f"  MISSING in textures/: {source}", file=sys.stderr)
+                return 1
+            uncracked = Image.open(drawn).convert("RGBA")
+            if uncracked.size != (SIZE, SIZE):
+                print(f"  {source} is {uncracked.size}, expected {SIZE}x{SIZE}", file=sys.stderr)
+                return 1
+        else:
+            uncracked = base_egg(colour)
 
         slightly = uncracked.copy()
         draw_cracks(slightly, colour, FIRST_CRACKS)

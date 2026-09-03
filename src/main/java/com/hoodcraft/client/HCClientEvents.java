@@ -1,7 +1,9 @@
 package com.hoodcraft.client;
 
 import com.hoodcraft.HoodCraft;
+import com.hoodcraft.client.model.CashCatModel;
 import com.hoodcraft.client.model.RobinModel;
+import com.hoodcraft.client.renderer.CashCatRenderer;
 import com.hoodcraft.client.renderer.RobinOnShoulderLayer;
 import com.hoodcraft.client.renderer.RobinRenderer;
 import com.hoodcraft.registry.HCEntities;
@@ -18,11 +20,13 @@ public final class HCClientEvents {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(RobinModel.LAYER, RobinModel::createBodyLayer);
+        event.registerLayerDefinition(CashCatModel.LAYER, CashCatModel::createBodyLayer);
     }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(HCEntities.ROBIN.get(), RobinRenderer::new);
+        event.registerEntityRenderer(HCEntities.CASH_CAT.get(), CashCatRenderer::new);
     }
 
     @SubscribeEvent

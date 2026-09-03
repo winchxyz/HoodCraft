@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "hatch=0": {
+      "model": "hoodcraft:block/cash_cat_egg"
+    },
+    "hatch=1": {
+      "model": "hoodcraft:block/cash_cat_egg_slightly_cracked"
+    },
+    "hatch=2": {
+      "model": "hoodcraft:block/cash_cat_egg_very_cracked"
+    }
+  }
+}

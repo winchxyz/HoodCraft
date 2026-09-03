@@ -2,6 +2,7 @@ package com.hoodcraft.registry;
 
 import com.hoodcraft.HoodCraft;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -25,6 +26,15 @@ public final class HCTags {
     public static final class Items {
         /** Every hatchable pet egg in the mod. The Hood Brush rolls one of these at random. */
         public static final TagKey<Item> HOOD_EGGS = tag("hood_eggs");
+
+        /**
+         * Anything the Cash Cat will accept as a lottery ticket.
+         *
+         * <p>This is the cross-mod convention tag rather than one of ours, so an ingot added by any
+         * other mod counts without HoodCraft having to know about it.
+         */
+        public static final TagKey<Item> INGOTS =
+                TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "ingots"));
 
         private static TagKey<Item> tag(String path) {
             return TagKey.create(Registries.ITEM, HoodCraft.id(path));

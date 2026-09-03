@@ -1,4 +1,7 @@
 {
   "replace": false,
-  "values": []
+  "values": [
+    "hoodcraft:robin_egg",
+    "hoodcraft:cash_cat_egg"
+  ]
 }

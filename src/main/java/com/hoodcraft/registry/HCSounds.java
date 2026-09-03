@@ -20,6 +20,14 @@ public final class HCSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> ROBIN_DEATH = register("entity.robin.death");
     public static final DeferredHolder<SoundEvent, SoundEvent> ROBIN_SONG = register("entity.robin.song");
 
+    /** Aliases onto vanilla's cat sounds - see sounds.json; no audio is shipped for these. */
+    public static final DeferredHolder<SoundEvent, SoundEvent> CASH_CAT_SAD = register("entity.cash_cat.sad");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CASH_CAT_PURR = register("entity.cash_cat.purr");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CASH_CAT_HURT = register("entity.cash_cat.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CASH_CAT_DEATH = register("entity.cash_cat.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CASH_CAT_CHEER = register("entity.cash_cat.cheer");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CASH_CAT_JACKPOT = register("entity.cash_cat.jackpot");
+
     private static DeferredHolder<SoundEvent, SoundEvent> register(String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(HoodCraft.id(name)));
     }

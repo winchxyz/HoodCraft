@@ -1,6 +1,7 @@
 package com.hoodcraft.registry;
 
 import com.hoodcraft.HoodCraft;
+import com.hoodcraft.entity.CashCat;
 import com.hoodcraft.entity.Robin;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
@@ -18,6 +19,13 @@ public final class HCEntities {
                     .eyeHeight(0.6F)
                     .clientTrackingRange(8)
                     .build("robin"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<CashCat>> CASH_CAT =
+            ENTITY_TYPES.register("cash_cat", () -> EntityType.Builder.of(CashCat::new, MobCategory.CREATURE)
+                    .sized(0.6F, 0.7F)
+                    .eyeHeight(0.55F)
+                    .clientTrackingRange(8)
+                    .build("cash_cat"));
 
     private HCEntities() {
     }

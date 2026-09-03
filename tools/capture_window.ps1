@@ -9,7 +9,8 @@ param(
     [Parameter(Mandatory = $true)][string]$Out,
     [string]$TitleMatch = "Minecraft",
     [int]$SettleMs = 900,
-    [switch]$HideHud
+    [switch]$HideHud,
+    [switch]$CloseMenu
 )
 
 Add-Type -AssemblyName System.Drawing
@@ -19,6 +20,7 @@ using System;
 using System.Runtime.InteropServices;
 public class Win {
     [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd);
+    [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
     [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
     [DllImport("user32.dll")] public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
     [DllImport("user32.dll")] public static extern bool ClientToScreen(IntPtr hWnd, ref POINT lpPoint);
@@ -85,6 +87,26 @@ $hgt = $rect.Bottom - $rect.Top
 if ($w -le 0 -or $hgt -le 0) { Write-Error "Window has no client area ($w x $hgt)"; exit 1 }
 
 $VK_F1 = 0x70
+$VK_ESCAPE = 0x1B
+
+# Bringing the window to the front can leave the pause menu open - Minecraft opens it whenever the
+# window loses focus in some setups - and a menu renders over the whole scene. Escape closes it if
+# one is showing. It would open the menu if none were, so it is only sent when the game is actually
+# paused, which is what the darkened-blur check below stands in for: a paused game keeps rendering
+# the world, so there is no reliable API for this, and sending Escape twice would toggle it back.
+if ($CloseMenu) { [Win]::TapKey($VK_ESCAPE); Start-Sleep -Milliseconds 400 }
+
+# Windows refuses to let a background process steal focus, so SetForegroundWindow can quietly do
+# nothing. The capture is an on-screen copy of the window's rectangle, which means that when it
+# fails we photograph whatever the user happens to have on top - their browser, their editor,
+# their private business. Verify the game actually came forward, and refuse to shoot if it did not.
+if ([Win]::GetForegroundWindow() -ne $h) {
+    Write-Error ("Minecraft did not come to the front - refusing to capture, because an on-screen " +
+        "grab would photograph whichever window is covering it. Click the game window, or run " +
+        "this while the machine is idle.")
+    exit 2
+}
+
 if ($HideHud) { [Win]::TapKey($VK_F1); Start-Sleep -Milliseconds 350 }
 
 $bmp = New-Object System.Drawing.Bitmap $w, $hgt

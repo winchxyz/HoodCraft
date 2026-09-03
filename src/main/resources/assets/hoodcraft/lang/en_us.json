@@ -1,12 +1,21 @@
 {
   "itemGroup.hoodcraft.main": "HoodCraft",
   "entity.hoodcraft.robin": "Robin",
-  "block.hoodcraft.robin_egg": "Robin Egg (WIP)",
+  "block.hoodcraft.robin_egg": "Robin Egg",
   "item.hoodcraft.black_feather": "Black Feather",
   "item.hoodcraft.hood_brush": "Hood Brush",
   "item.hoodcraft.robin_spawn_egg": "Robin Spawn Egg",
   "subtitles.entity.robin.ambient": "Robin chirps",
   "subtitles.entity.robin.hurt": "Robin hurts",
   "subtitles.entity.robin.death": "Robin dies",
-  "subtitles.entity.robin.song": "Robin sings"
+  "subtitles.entity.robin.song": "Robin sings",
+  "entity.hoodcraft.cash_cat": "Cash Cat",
+  "block.hoodcraft.cash_cat_egg": "Cash Cat Egg",
+  "item.hoodcraft.cash_cat_spawn_egg": "Cash Cat Spawn Egg",
+  "subtitles.entity.cash_cat.sad": "Cash Cat weeps",
+  "subtitles.entity.cash_cat.purr": "Cash Cat purrs",
+  "subtitles.entity.cash_cat.hurt": "Cash Cat hurts",
+  "subtitles.entity.cash_cat.death": "Cash Cat dies",
+  "subtitles.entity.cash_cat.cheer": "Cash Cat cheers up",
+  "subtitles.entity.cash_cat.jackpot": "Cash Cat strikes it rich"
 }

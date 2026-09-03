@@ -20,16 +20,16 @@ from rcon import Checks, Rcon
 
 SITE_STR = "0 200 0"
 
-# The pet egg is deliberately absent while it is WIP: there is only one mob so far, and it spawns
-# in the world already, so an egg for it would be a circular reward. The other four keep their
-# original weights (4/4/3/3 = 14) rather than being rescaled, so re-adding a weight-1 egg entry
-# restores exactly 1/15 = 6.67% with no other change.
+# With a second pet in the mod the egg is worth finding again, so it is back in the pool at
+# weight 1 against the other four's 4/4/3/3. That makes 15, and 1/15 is 6.67% - vanilla's own
+# sniffer-egg odds in warm ocean ruins, which is where the number came from.
+PET_EGGS = {"hoodcraft:robin_egg", "hoodcraft:cash_cat_egg"}
 EXPECTED_BRUSH_LOOT = {
     "minecraft:nautilus_shell",
     "minecraft:emerald",
     "minecraft:leather_boots",
     "minecraft:stone_hoe",
-}
+} | PET_EGGS
 
 
 def collect_brush_loot(r: Rcon, barrels: int = 60, rolls_per_barrel: int = 40) -> Counter:
@@ -125,16 +125,22 @@ def main() -> int:
     r.cmd("kill @e[type=item]")
 
     # --------------------------------------------------- 2. brush loot table
-    print("\n2. Hood Brush loot table  (no egg: it is WIP)")
+    print("\n2. Hood Brush loot table  (egg should land at 6.7%)")
     tally = collect_brush_loot(r)
     total = sum(tally.values())
     print(f"     {total} rolls collected")
     for item, n in tally.most_common():
         print(f"       {item:<34} {n:>5}  {100.0 * n / max(total, 1):>5.2f}%")
 
-    check("no pet eggs while the egg is WIP", tally.get("hoodcraft:robin_egg", 0) == 0,
-          f"{tally.get('hoodcraft:robin_egg', 0)} eggs in {total} rolls")
-    check("only the four intended items", set(tally) == EXPECTED_BRUSH_LOOT,
+    eggs = sum(tally.get(e, 0) for e in PET_EGGS)
+    egg_pct = 100.0 * eggs / max(total, 1)
+    check("pet eggs are back in the pool", eggs > 0, f"{eggs} eggs in {total} rolls")
+    check("egg rate near 6.7%", 4.5 <= egg_pct <= 9.0, f"{egg_pct:.2f}%")
+    # The rate must not scale with the number of pets - that is the whole point of choosing the
+    # species with a loot function instead of listing one entry per egg.
+    check("both species can turn up", len(PET_EGGS & set(tally)) == 2,
+          f"seen: {sorted(PET_EGGS & set(tally))}")
+    check("nothing unexpected in the pool", set(tally) <= EXPECTED_BRUSH_LOOT,
           f"unexpected: {sorted(set(tally) - EXPECTED_BRUSH_LOOT) or 'none'}")
 
     # ------------------------------------------------------- 3. egg hatching

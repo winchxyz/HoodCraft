@@ -30,6 +30,14 @@ public final class HCItems {
             ITEMS.register("robin_spawn_egg", () -> new DeferredSpawnEggItem(
                     HCEntities.ROBIN, 0x00C805, 0x1B1B1B, new Item.Properties()));
 
+    public static final DeferredItem<BlockItem> CASH_CAT_EGG =
+            ITEMS.registerSimpleBlockItem("cash_cat_egg", HCBlocks.CASH_CAT_EGG,
+                    new Item.Properties().rarity(Rarity.UNCOMMON));
+
+    public static final DeferredItem<DeferredSpawnEggItem> CASH_CAT_SPAWN_EGG =
+            ITEMS.register("cash_cat_spawn_egg", () -> new DeferredSpawnEggItem(
+                    HCEntities.CASH_CAT, 0xD9CEBE, 0x6E6055, new Item.Properties()));
+
     private HCItems() {
     }
 }

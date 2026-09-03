@@ -112,6 +112,32 @@ def robin(r: Rcon, dx: float, dy: float, dz: float, yaw: float = 180.0,
 # --------------------------------------------------------------------- scenes
 # Yaw 0 faces south (+Z), so a camera south of the set looks back at it with yaw 0.
 
+def cash_cat(r: Rcon, dx: float, dz: float, yaw: float = 180.0, cheered: bool = False) -> None:
+    """Place a Cash Cat. Cheered ones stand and behave like an ordinary cat.
+
+    Unlike the Robin, no Sitting tag is needed: the model drops into the mascot slouch whenever the
+    cat is miserable and not moving, which is exactly the state a frozen NoAI cat is in.
+    """
+    tags = "NoAI:1b,NoGravity:1b,PersistenceRequired:1b,Silent:1b"
+    if cheered:
+        tags += ",CheerTicks:24000"
+    r.cmd(f"summon hoodcraft:cash_cat {STAGE_X + dx} {FLOOR_Y + 1} {STAGE_Z + dz} "
+          '{%s,Rotation:[%.1ff,0f]}' % (tags, yaw))
+
+
+def scene_cash_cat(r: Rcon) -> None:
+    """The Cash Cat sitting and weeping, with a cheered one alongside for contrast."""
+    clear_stage(r)
+    floor(r, "minecraft:polished_deepslate")
+    backdrop(r, "minecraft:deepslate_tiles", at_z=6, height=8)
+    hold(r, "minecraft:air")
+    r.cmd(f"setblock {STAGE_X - 4} {FLOOR_Y + 3} {STAGE_Z + 5} minecraft:soul_lantern")
+    r.cmd(f"setblock {STAGE_X + 4} {FLOOR_Y + 3} {STAGE_Z + 5} minecraft:soul_lantern")
+    cash_cat(r, -0.75, 2.0, 160)
+    cash_cat(r, 0.85, 2.2, 200, cheered=True)
+    stand(r, 0.0, 0.0, 0, 22)
+
+
 def scene_hero(r: Rcon) -> None:
     """Robins on a grassy ledge with open sky behind them."""
     clear_stage(r)
@@ -205,6 +231,7 @@ SCENES = {
     "brush": (scene_brush, False),
     "egg": (scene_egg, True),
     "items": (scene_items, True),
+    "cashcat": (scene_cash_cat, True),
 }
 
 

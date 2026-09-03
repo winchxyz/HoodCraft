@@ -23,6 +23,16 @@
           "type": "minecraft:item",
           "name": "minecraft:stone_hoe",
           "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hoodcraft:robin_egg",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "hoodcraft:random_hood_egg"
+            }
+          ]
         }
       ]
     }

@@ -31,12 +31,20 @@ ASSETS = ROOT / "src" / "main" / "resources" / "assets" / "hoodcraft" / "texture
 # A source whose size differs from the expected size is centred into the expected canvas rather
 # than resampled, so pixel art is never blurred by an accidental resize.
 MAPPING: list[tuple[str, str, tuple[int, int]]] = [
+    # Source paths are relative to textures/, which is organised one folder per pet.
+
     # --- Robin -------------------------------------------------------------
-    ("robin_bird.png", "entity/robin.png", (64, 64)),
-    ("Invicon_Robin_Spawn_Egg.png", "item/robin_spawn_egg.png", (16, 16)),
-    # --- shared items ------------------------------------------------------
-    ("Robin_Feather.png", "item/black_feather.png", (16, 16)),
-    ("Robin_brush.png", "item/hood_brush.png", (16, 16)),
+    ("jay/robin_bird.png", "entity/robin.png", (64, 64)),
+    ("jay/Invicon_Robin_Spawn_Egg.png", "item/robin_spawn_egg.png", (16, 16)),
+    ("jay/Robin_Feather.png", "item/black_feather.png", (16, 16)),
+    ("jay/Robin_brush.png", "item/hood_brush.png", (16, 16)),
+
+    # --- Cash Cat ----------------------------------------------------------
+    # 64x32, the vanilla cat sheet. The model splits the ears onto their own parts but keeps their
+    # offsets, so ear pixels stay exactly where the vanilla layout puts them.
+    ("cashcat/cashcat.png", "entity/cash_cat.png", (64, 32)),
+    ("cashcat/cashcat_tame.png", "entity/cash_cat_tamed.png", (64, 32)),
+    ("cashcat/cashcat_egg_item.png", "item/cash_cat_egg.png", (16, 16)),
 ]
 
 
