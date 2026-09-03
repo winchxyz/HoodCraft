@@ -29,31 +29,39 @@ shoulder, sits when told, and takes no fall damage. Two things set it apart. It 
 **wheat seeds** rather than cookies, and unlike a parrot, a tamed pair can be **bred**. Spawns in
 forest biomes.
 
+**The Cash Cat** — the crying cat. It sits where it spawns and weeps, which is its whole character.
+**Cooked salmon** tames and breeds it, but salmon will not cheer it up: only a **gold ingot** does
+that, and only for one Minecraft day, during which it drops the slouch, stops crying and behaves
+like an ordinary cat. Feeding it *any* ingot is also a lottery — one time in ten thousand it coughs
+up a buried treasure map. Creepers and phantoms fear it exactly as they fear a vanilla cat.
+
 **The Black Feather** — what a Robin drops, and the only feather the Hood Brush can be built from.
 
 **The Hood Brush** — a feather, a gold ingot and a stick. Handles exactly like the vanilla brush
 (64 uses, 4.8 seconds a block) but uncovers a different set of things: a nautilus shell, an emerald,
-leather boots or a stone hoe.
+leather boots, a stone hoe — or, at **6.7%**, a pet egg.
+
+**Pet eggs** — the only way to get one is to brush for it. Place it and wait: 30 minutes to hatch,
+15 on wool, 5 on slime or honey, through three visible cracking stages. The block underneath is
+re-read at every stage, so moving an egg mid-hatch changes the time left.
 
 **Suspicious gravel in ancient cities** — 30% of the loose cobbled deepslate on their floors, so the
 brush has somewhere new to be used. Vanilla's suspicious sand still works as it always did.
 
-> [!NOTE]
-> **The pet egg is work in progress and cannot be obtained.** With one mob, and one that already
-> spawns in the world, an egg for it would be a circular reward. The block, its three hatch stages
-> and its 30 / 15 / 5-minute substrate timing are all built and tested — it is simply held back
-> until there is a second pet worth finding.
-
 ## Screenshots
 
 ![Three Robins perched on a log against a clear sky, with a fourth in flight](docs/screenshots/hero.png)
+
+![A Cash Cat sitting and weeping, with a cheered one standing behind it](docs/screenshots/cashcat.png)
+
+*The Cash Cat, sitting and crying. The one behind it has been fed a gold ingot.*
 
 | | |
 |:--:|:--:|
 | ![A Robin perched, seen in profile](docs/screenshots/portrait.png) | ![The Hood Brush held over patches of suspicious sand and gravel](docs/screenshots/brush.png) |
 | **The Robin** — 6 hearts, tamed with wheat seeds | **The Hood Brush** — over suspicious sand and gravel |
 | ![Three Robin Eggs at different hatch stages](docs/screenshots/egg.png) | ![The Black Feather, Hood Brush and Robin Egg as dropped items](docs/screenshots/items.png) |
-| **Hatch stages** on wool, slime and honey *(WIP)* | **Black Feather, Hood Brush, Robin Egg** |
+| **Hatch stages** on wool, slime and honey | **Black Feather, Hood Brush, Robin Egg** |
 
 ## Installing
 
@@ -62,18 +70,20 @@ brush has somewhere new to be used. Vanilla's suspicious sand still works as it 
 
 No other mods are required. The Robin's model was rebuilt against vanilla rather than copied, so
 there is **no dependency on Citadel** even though the geometry originates in a mod that needs it.
+The Cash Cat is built on vanilla's own cat mesh, reposed.
 
 ## Reference
 
 | | |
 | --- | --- |
-| Robin health | 6 (3 hearts) |
-| Taming | wheat seeds, 1 in 3 per seed |
-| Breeding | wheat seeds |
-| Spawns in | forest biomes |
+| Robin | 6 hearts · wheat seeds to tame (1 in 3) and breed · forest biomes |
+| Cash Cat | 10 hearts · cooked salmon to tame (1 in 3) and breed · plains, savanna, taiga |
+| Cheering a Cash Cat | one gold ingot, lasts one Minecraft day (24,000 ticks) |
+| Treasure map | any ingot, 1 in 10,000 |
 | Hood Brush durability | 64 uses |
 | Brushing time | 96 ticks (4.8 s) |
-| Egg hatch *(WIP)* | 30 min, 15 on wool, 5 on slime or honey |
+| Pet egg from brushing | 6.7% — weight 1 of 15, vanilla's own sniffer-egg odds |
+| Egg hatch | 30 min, 15 on wool, 5 on slime or honey |
 | Suspicious gravel | 30% of ancient-city cobbled deepslate |
 
 Unlike a vanilla brush, the Hood Brush also works on suspicious blocks you placed yourself — handy
@@ -99,4 +109,7 @@ The Robin's model geometry and its bird calls derive from the Blue Jay in
 **[Alex's Mobs](https://github.com/Alex-the-666/AlexsMobs)** by Alexthe666, which is GPL-3.0. That
 licence is copyleft, so anything built from it carries the same terms, and this mod does too.
 
-Mechanics are mirrored from vanilla Minecraft's brush, sniffer egg and parrot.
+The Cash Cat's geometry is vanilla's cat, reposed, and it borrows vanilla's cat sounds rather than
+shipping its own.
+
+Mechanics are mirrored from vanilla Minecraft's brush, sniffer egg, parrot and cat.
