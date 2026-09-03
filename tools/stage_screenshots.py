@@ -129,11 +129,10 @@ def scene_cash_cat(r: Rcon) -> None:
     """The Cash Cat sitting and weeping, with a cheered one alongside for contrast."""
     clear_stage(r)
     floor(r, "minecraft:polished_deepslate")
-    backdrop(r, "minecraft:deepslate_tiles", at_z=6, height=8)
+    backdrop(r, "minecraft:deepslate_tiles", at_z=7, height=8)
     hold(r, "minecraft:air")
-    r.cmd(f"setblock {STAGE_X - 4} {FLOOR_Y + 3} {STAGE_Z + 5} minecraft:soul_lantern")
-    r.cmd(f"setblock {STAGE_X + 4} {FLOOR_Y + 3} {STAGE_Z + 5} minecraft:soul_lantern")
-    # Three-quarter view of the sitting cat, with a cheered one behind it for contrast.
+    for dx in (-5, 5):
+        r.cmd(f"setblock {STAGE_X + dx} {FLOOR_Y + 4} {STAGE_Z + 6} minecraft:soul_lantern")
     cash_cat(r, 0.1, 2.1, 145)
     cash_cat(r, -1.9, 3.4, 205, cheered=True)
     stand(r, 0.0, 0.0, 0, 18)

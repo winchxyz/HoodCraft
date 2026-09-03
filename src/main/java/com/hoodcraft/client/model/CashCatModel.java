@@ -51,18 +51,21 @@ public class CashCatModel extends AgeableListModel<CashCat> {
     private static final float SAD_FRONT_LEG_Y = 14.1F;
     private static final float SAD_FRONT_LEG_Z = -6.0F;
     private static final float SAD_FRONT_LEG_X = 1.0F;
-    // Hind legs turn out to the sides, the way a real cat's do when it sits, so the haunches read
-    // from the side instead of vanishing under the belly.
+    // Hind legs: folded flat so the thigh lies along the ground beside the body, then swung out
+    // into a shallow V so the haunches are visible from the side.
     //
-    // The splay is zRot, not yRot. Rotating a downward leg about Y only spins it about its own
-    // length and changes nothing; combined with a 90-degree xRot fold it swings the leg up flat
-    // against the underside of the body. zRot is the one that tips it outward while it still points
-    // downward, so xRot is kept to a partial fold rather than the full right angle vanilla uses.
-    private static final float SAD_HIND_LEG_X = 1.5F;
-    private static final float SAD_HIND_LEG_Y = 19.2F;
-    private static final float SAD_HIND_LEG_Z = 3.0F;
-    private static final float SAD_HIND_LEG_FOLD = -0.55F;
-    private static final float SAD_HIND_LEG_SPLAY = 0.70F;
+    // Two things matter and both were got wrong first time round. The fold has to be a full right
+    // angle, which maps the leg's 6-long axis to point forward and leaves the box hanging 1-3 units
+    // under the pivot - so the pivot must sit at 21, putting the underside exactly on the ground at
+    // 24. Anything higher leaves the legs floating. And the splay is yRot, not zRot: once the leg
+    // has been folded flat, yRot swings it sideways within the ground plane, whereas zRot tips it
+    // up into the air.
+    private static final float SAD_HIND_LEG_X = 1.8F;
+    private static final float SAD_HIND_LEG_Y = 21.0F;
+    private static final float SAD_HIND_LEG_Z = 2.0F;
+    private static final float SAD_HIND_LEG_FOLD = (float) (-Math.PI / 2);
+    private static final float SAD_HIND_LEG_SPLAY = 0.32F;
+
     /** Ears folded back and splayed outward - the single clearest misery tell. */
     private static final float SAD_EAR_X_ROT = 0.85F;
     private static final float SAD_EAR_Z_ROT = 0.42F;
@@ -180,8 +183,8 @@ public class CashCatModel extends AgeableListModel<CashCat> {
         this.rightFrontLeg.xRot = 0.0F;
         this.leftHindLeg.xRot = 0.0F;
         this.rightHindLeg.xRot = 0.0F;
-        this.leftHindLeg.zRot = 0.0F;
-        this.rightHindLeg.zRot = 0.0F;
+        this.leftHindLeg.yRot = 0.0F;
+        this.rightHindLeg.yRot = 0.0F;
         this.leftEar.xRot = 0.0F;
         this.leftEar.zRot = 0.0F;
         this.rightEar.xRot = 0.0F;
@@ -225,13 +228,13 @@ public class CashCatModel extends AgeableListModel<CashCat> {
         this.leftHindLeg.y = lerp(t, this.leftHindLeg.y, SAD_HIND_LEG_Y);
         this.leftHindLeg.z = lerp(t, this.leftHindLeg.z, SAD_HIND_LEG_Z);
         this.leftHindLeg.xRot = lerp(t, this.leftHindLeg.xRot, SAD_HIND_LEG_FOLD);
-        this.leftHindLeg.zRot = lerp(t, this.leftHindLeg.zRot, -SAD_HIND_LEG_SPLAY);
+        this.leftHindLeg.yRot = lerp(t, this.leftHindLeg.yRot, -SAD_HIND_LEG_SPLAY);
 
         this.rightHindLeg.x = lerp(t, this.rightHindLeg.x, -SAD_HIND_LEG_X);
         this.rightHindLeg.y = lerp(t, this.rightHindLeg.y, SAD_HIND_LEG_Y);
         this.rightHindLeg.z = lerp(t, this.rightHindLeg.z, SAD_HIND_LEG_Z);
         this.rightHindLeg.xRot = lerp(t, this.rightHindLeg.xRot, SAD_HIND_LEG_FOLD);
-        this.rightHindLeg.zRot = lerp(t, this.rightHindLeg.zRot, SAD_HIND_LEG_SPLAY);
+        this.rightHindLeg.yRot = lerp(t, this.rightHindLeg.yRot, SAD_HIND_LEG_SPLAY);
 
         this.leftEar.xRot = lerp(t, this.leftEar.xRot, SAD_EAR_X_ROT);
         this.leftEar.zRot = lerp(t, this.leftEar.zRot, -SAD_EAR_Z_ROT);
