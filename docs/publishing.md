@@ -124,7 +124,9 @@ Source: <https://github.com/winchxyz/HoodCraft>
 
 ## Modrinth
 
-<https://modrinth.com/dashboard/projects> → **Create a project**
+Sign in, hover your avatar, **Create a project**. A project stays a private draft until you submit it,
+and it cannot be submitted with no versions attached — so upload the jar before looking for the submit
+button. Review takes about 24–48 hours.
 
 | Field | Value |
 | --- | --- |
@@ -155,7 +157,8 @@ vote is exactly the thing that turns a mod page into an advert.
 
 ## CurseForge
 
-<https://console.curseforge.com/> → **Projects** → **Create Project**
+<https://authors.curseforge.com/#/projects/create/choose-game> — the authors portal, not the studios
+console. Pick **Minecraft**, and the form fills in with the fields below.
 
 | Field | Value |
 | --- | --- |
@@ -196,10 +199,18 @@ social card.
 | File | `build/libs/hoodcraft-0.2.0.jar` |
 | Display name | `HoodCraft 0.2.0` |
 | Version number (Modrinth) | `0.2.0` |
-| Release channel | **Beta** — see *Not covered* under Pre-flight |
+| Release channel | **Release** on both — see below |
 | Game version | 1.21.1 |
 | Loader | NeoForge |
 | Dependencies | none |
+
+**Release, not Beta.** The instinct is to ship a first upload as Beta, and the *Not covered* note
+under Pre-flight is the honest reason to want to. But CurseForge requires a project to have at least
+one **Release** file before it will sync with the CurseForge app — a Beta-only project is browsable
+on the site and not installable from the launcher, which is how most people would get it. The
+version number is already doing the work Beta would have done: 0.2.0 says early on its own.
+
+Modrinth has no such constraint, but there is no reason for the two to disagree.
 
 ### Why 0.2.0 and not 0.1.0
 
