@@ -35,8 +35,9 @@ python tools/verify_release.py
 ```
 
 **Not covered:** nobody but you has play-tested it, and no client has run the *packaged* jar (the dev
-client reads the same resource tree, so the jar's assets were checked statically instead). That is
-the honest case for shipping 0.1.0 as a beta rather than a stable release.
+client reads the same resource tree, so the jar's assets were checked statically instead). Keep that
+in mind when reading the release-channel note further down — it is the reason the instinct is to ship
+this as a beta, and the reason 0.2.0 rather than 1.0.0 is the right number.
 
 ---
 
@@ -52,6 +53,8 @@ Both platforms take Markdown. Paste as-is.
 
 A small, self-contained progression that hangs off Minecraft's own archaeology loop. It starts with a
 bird and a feather, and ends with you brushing dust off something that hatches.
+
+Two pets so far. More arrive as more mascots do.
 
 **The Ray**
 
@@ -132,7 +135,7 @@ button. Review takes about 24–48 hours.
 | --- | --- |
 | Name | `HoodCraft` |
 | Slug | `hoodcraft` |
-| Summary | Tameable pets modelled on the mascots of Robinhood Chain tokens. |
+| Summary | Tameable pets modelled on the mascots of Robinhood Chain tokens, found by brushing suspicious sand and gravel. The Ray and the Cash Cat first, with more to follow. |
 | Project type | Mod |
 | Categories | **Adventure**, **Mobs** |
 | Client side | **Required** — entity renderers and models |
@@ -163,7 +166,7 @@ console. Pick **Minecraft**, and the form fills in with the fields below.
 | Field | Value |
 | --- | --- |
 | Name | `HoodCraft` |
-| Summary | Tameable pets modelled on the mascots of Robinhood Chain tokens. |
+| Summary | Tameable pets modelled on the mascots of Robinhood Chain tokens, found by brushing suspicious sand and gravel. The Ray and the Cash Cat first, with more to follow. |
 | Game | Minecraft |
 | Category | **Mods** → *Adventure and RPG*, plus *Mobs* |
 | Mod loader | NeoForge |
