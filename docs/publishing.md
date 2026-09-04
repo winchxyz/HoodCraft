@@ -137,13 +137,13 @@ button. Review takes about 24–48 hours.
 | Slug | `hoodcraft` |
 | Summary | Tameable pets modelled on the mascots of Robinhood Chain tokens, found by brushing suspicious sand and gravel. The Ray and the Cash Cat first, with more to follow. |
 | Project type | Mod |
-| Categories | **Adventure**, **Mobs** |
+| Categories | **Mobs**, **Adventure**, **World Generation** — feature Mobs and Adventure |
 | Client side | **Required** — entity renderers and models |
 | Server side | **Required** — entities, worldgen and loot live here |
 | Licence | `GPL-3.0-only` |
 | Source | `https://github.com/winchxyz/HoodCraft` |
 | Issues | `https://github.com/winchxyz/HoodCraft/issues` |
-| Icon | `src/main/resources/hoodcraft.png` (256×256) |
+| Icon | `docs/branding/icon-ray-avatar.png` — 450×450, 104 KiB. Modrinth rejects icons over 256 KiB, which the raw screenshot exceeded |
 
 Modrinth reviews every new project before it goes public. Two of their content rules bear on this one,
 so get them right the first time rather than in a rejection:
@@ -154,6 +154,33 @@ so get them right the first time rather than in a rejection:
 - **Copyright and Reuploads.** Reused licensed content must credit its source. The Alex's Mobs
   attribution belongs in the project description, not only in the GitHub README — it is in the Credits
   block above.
+
+### Content disclosures
+
+Under **Settings → Content disclosures**, and only reachable *after* a version is uploaded — the panel
+stays locked until then, so the checklist order is misleading. Two of the eight apply:
+
+**Contains derivative content.** The Ray's geometry and bird calls come from the Blue Jay, which is
+"a substantial amount of someone else's work" in their wording.
+
+- Source `Alex's Mobs`, link <https://modrinth.com/mod/alexs-mobs>
+- How it differs: *Model geometry and bird calls derive from the Blue Jay. The model was rebuilt
+  against vanilla rather than copied, so HoodCraft does not depend on Citadel. Behaviour, taming,
+  breeding, drops and the entire brushing progression are new work. Licensed GPL-3.0 in line with the
+  original.*
+
+**Contains AI-generated content**, ticking **code** and **text**. The Java and the store description
+were written with AI assistance, which their rule counts as "a substantial amount of AI-generated
+code" and "any element of your project's page such as description". Do **not** tick assets — the
+textures are hand-drawn — or functionality, since nothing in the mod calls a model at runtime.
+
+This is not optional and not a judgement call. Modrinth bans projects that are "primarily or entirely
+a product of AI output" and permits AI-assisted ones *with disclosure*; enforcement began
+27 September 2026. Their separate rule that AI-generated images may not be used as an icon, banner or
+gallery image is why the icon is an in-game screenshot.
+
+Leave the other six off. **Archive project** in particular is not a disclosure at all — it marks the
+mod as abandoned.
 
 Leave the vote site out. It is a private repository with no public URL, and a link to a token-weighted
 vote is exactly the thing that turns a mod page into an advert.
@@ -168,12 +195,18 @@ console. Pick **Minecraft**, and the form fills in with the fields below.
 | Name | `HoodCraft` |
 | Summary | Tameable pets modelled on the mascots of Robinhood Chain tokens, found by brushing suspicious sand and gravel. The Ray and the Cash Cat first, with more to follow. |
 | Game | Minecraft |
-| Category | **Mods** → *Adventure and RPG*, plus *Mobs* |
+| Class | **Mods** |
+| Main category | **Mobs** — the mod's identity is two new mobs; the archaeology is how you reach them |
+| Additional categories | *Adventure and RPG*, *World Gen* |
 | Mod loader | NeoForge |
 | Licence | **GPL-3.0** — not optional, see below |
 | Source URL | `https://github.com/winchxyz/HoodCraft` |
 | Issues URL | `https://github.com/winchxyz/HoodCraft/issues` |
-| Avatar | `docs/branding/ray-avatar.jpg` (1408×1408) |
+| Logo | `docs/branding/icon-ray-avatar.png` (450×450 PNG — their minimum is 400×400, 1:1, .png) |
+| Source code | set the dropdown to publicly available, then `https://github.com/winchxyz/HoodCraft` |
+| Environment | Client **and** Server |
+| Java | 21 |
+| Default relations | none — listing Alex's Mobs here would make launchers download it, which is not what attribution means |
 
 CurseForge also reviews first uploads by hand, and is stricter than Modrinth about the licence field
 matching reality.
