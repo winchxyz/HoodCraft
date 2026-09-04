@@ -10,6 +10,9 @@ displayName = "${mod_name}"
 authors = "${mod_authors}"
 description = '''${mod_description}'''
 logoFile = "hoodcraft.png"
+# Shown as a link in the in-game mod list. GPL-3.0 obliges the source to be reachable by anyone
+# holding the jar, so this points at the repository rather than at a store page.
+displayURL = "https://github.com/winchxyz/HoodCraft"
 
 [[dependencies.${mod_id}]]
 modId = "neoforge"
