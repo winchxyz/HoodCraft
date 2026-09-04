@@ -62,3 +62,9 @@ site/data/
 site/.env*.local
 site/next-env.d.ts
 site/tsconfig.tsbuildinfo
+
+# Raw capture for the promo. Large, and not part of the mod.
+footage/
+
+# Stray log the NeoForge installer drops when tools/verify_release.py sets up its test server.
+neoforge-*-installer.jar.log

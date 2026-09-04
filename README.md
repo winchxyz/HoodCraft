@@ -10,8 +10,10 @@
 [![License](https://img.shields.io/badge/license-GPL--3.0-00C805?style=flat-square)](LICENSE)
 [![Build](https://img.shields.io/github/actions/workflow/status/winchxyz/HoodCraft/build.yml?branch=main&style=flat-square)](../../actions/workflows/build.yml)
 
-<!-- Add once the CurseForge project exists — replace PROJECT_ID with the numeric id from the project page:
+<!-- Uncomment each once its project page exists. CurseForge needs the numeric id from the project
+     page in place of PROJECT_ID; Modrinth takes the slug. See docs/publishing.md.
 [![CurseForge](https://img.shields.io/curseforge/dt/PROJECT_ID?style=flat-square&logo=curseforge&logoColor=white&label=downloads)](https://www.curseforge.com/minecraft/mc-mods/hoodcraft)
+[![Modrinth](https://img.shields.io/modrinth/dt/hoodcraft?style=flat-square&logo=modrinth&logoColor=white&label=downloads)](https://modrinth.com/mod/hoodcraft)
 -->
 
 </div>

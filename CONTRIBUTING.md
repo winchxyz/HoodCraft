@@ -93,6 +93,28 @@ nothing at all.
 boots happily past a model that cannot bake — and an invisible mob is not something a server-side
 check will ever report. Grep a `runClient` log for `Failed to create model`.
 
+### Before a release
+
+Everything above runs inside the dev environment, which supplies a great deal that a published jar
+has to carry on its own: resources are read from `src/main/resources` rather than from inside the
+jar, and whatever the harness registered stays registered. A jar can therefore pass every check here
+and still be broken for the person who downloads it.
+
+```bash
+./gradlew build
+python tools/verify_release.py
+```
+
+That installs a clean NeoForge server under `build/release-test/`, drops the built jar into its
+`mods/`, and asks the running game whether the content is actually there — every entity, block, item
+and loot table, plus 400 rolls of the brush table to confirm `RandomHoodEggFunction` survived
+packaging. It then compares the jar against the source resource tree and resolves every model and
+texture reference inside it, because a texture filtered out of the build looks perfectly correct on
+disk and appears in game as a missing-texture checkerboard.
+
+It never accepts the EULA for you. It reuses the `eula=true` already in `run/eula.txt` — which is
+there once you have run `runServer` — and stops with an explanation if that is missing.
+
 ## Screenshots
 
 Release media is staged over RCON rather than composed by hand, so shots are reproducible when the
